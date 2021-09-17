@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        applicationId "de.ba.railroad.simpleclient"
+        minSdkVersion 26
+        targetSdkVersion 30
+
+        versionCode 3
+        versionName "2.1"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation project(':ise-model')
+
+    // https://mvnrepository.com/artifact/com.android.volley/volley
+    implementation group: 'com.android.volley', name: 'volley', version: '1.2.0'
+
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    // https://mvnrepository.com/artifact/org.eclipse.jetty.websocket/websocket-client
+    implementation 'org.eclipse.jetty.websocket:websocket-client:9.4.40.v20210413'
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+    // https://mvnrepository.com/artifact/com.android.support.test.espresso/espresso-core
+    androidTestImplementation group: 'com.android.support.test.espresso', name: 'espresso-core', version: '3.1.1'
+
+    // https://mvnrepository.com/artifact/junit/junit
+    testImplementation 'junit:junit:4.13.2'
+}

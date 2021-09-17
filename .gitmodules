@@ -1,0 +1,3 @@
+[submodule "ise-model"]
+	path = ise-model
+	url = https://github.com/ba-dresden/ise-model.git

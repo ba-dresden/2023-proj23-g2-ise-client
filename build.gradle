@@ -1,0 +1,52 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        // repositories for work@anywhere
+        mavenCentral()
+        google()
+
+        // repository for work@ba-dresden
+        // maven { url "http://dv-git01.dv.ba-dresden.local:8081/artifactory/libs/" }
+    }
+
+    repositories {
+        // repositories for work@anywhere
+        mavenCentral()
+        google()
+
+        // repository for work@ba-dresden
+        // maven { url "http://dv-git01.dv.ba-dresden.local:8081/artifactory/dev/" }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.2'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        // repositories for work@anywhere
+        mavenCentral()
+        google()
+
+        // repository for work@ba-dresden
+        // maven { url "http://dv-git01.dv.ba-dresden.local:8081/artifactory/libs/" }
+    }
+
+    repositories {
+        // repositories for work@anywhere
+        mavenCentral()
+        google()
+
+        // repository for work@ba-dresden
+        // maven { url "http://dv-git01.dv.ba-dresden.local:8081/artifactory/dev/" }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
