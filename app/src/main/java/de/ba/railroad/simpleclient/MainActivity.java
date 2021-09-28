@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
      * 10.0.2.2     (local) Host for Android Emulator
      */
     // private static final String RAILROAD_SERVER = "http://ise-rrs01.dv.ba-dresden.local:8095";
-    // private static final String RAILROAD_SERVER = "http://dv-git01.dv.ba-dresden.local:8095";
-    private static final String RAILROAD_SERVER = "http://10.0.2.2:8095";
+    private static final String RAILROAD_SERVER = "http://dv-git01.dv.ba-dresden.local:8095";
+    // private static final String RAILROAD_SERVER = "http://10.0.2.2:8095";
 
     /**
      * WebSocket connection to a locomotive server

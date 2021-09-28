@@ -2,21 +2,13 @@
 
 buildscript {
     repositories {
-        // repositories for work@anywhere
         mavenCentral()
         google()
-
-        // repository for work@ba-dresden
-        // maven { url "http://dv-git01.dv.ba-dresden.local:8081/artifactory/libs/" }
     }
 
     repositories {
-        // repositories for work@anywhere
         mavenCentral()
         google()
-
-        // repository for work@ba-dresden
-        // maven { url "http://dv-git01.dv.ba-dresden.local:8081/artifactory/dev/" }
     }
 
     dependencies {
@@ -29,21 +21,13 @@ buildscript {
 
 allprojects {
     repositories {
-        // repositories for work@anywhere
         mavenCentral()
         google()
-
-        // repository for work@ba-dresden
-        // maven { url "http://dv-git01.dv.ba-dresden.local:8081/artifactory/libs/" }
     }
 
     repositories {
-        // repositories for work@anywhere
         mavenCentral()
         google()
-
-        // repository for work@ba-dresden
-        // maven { url "http://dv-git01.dv.ba-dresden.local:8081/artifactory/dev/" }
     }
 }
 
