@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
             locomotiveSocket.sendLocomotive(locomotive);
         });
 
-        // associate light buttons
+        // associate horn button
         findViewById(R.id.horn).setOnClickListener(v -> {
             if (locomotive.isHornSound() == null) {
                 return;
