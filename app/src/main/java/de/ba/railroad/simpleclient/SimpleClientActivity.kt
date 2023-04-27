@@ -17,9 +17,7 @@ import de.ba.railroadclient.ws.CraneWebSocketClient
 import de.ba.railroadclient.ws.LocomotiveWebSocketClient
 import de.ba.railroadclient.ws.SwitchGroupWebSocketClient
 import model.*
-import ws.CraneWebSocketFacade
-import ws.LocomotiveWebSocketFacade
-import ws.SwitchGroupWebSocketFacade
+import ws.WebSocketFacade
 import java.text.MessageFormat
 
 class SimpleClientActivity : AppCompatActivity() {
@@ -140,13 +138,13 @@ class SimpleClientActivity : AppCompatActivity() {
             if (locomotive.isHornSound == null) {
                 return@setOnClickListener
             }
-            locomotive.isHornSound = !locomotive.isHornSound
+            locomotive.isHornSound = !locomotive.isHornSound!!
             locomotiveSocket.sendLocomotive(locomotive)
         }
 
         locomotiveSocket.webSocketObserver =
-            object : LocomotiveWebSocketFacade.WebSocketObserver {
-                override fun locomotiveChanged(locomotive: Locomotive) {
+            object : WebSocketFacade.WebSocketObserver<Locomotive> {
+                override fun objectReceived(receivedObject: Locomotive) {
                     runOnUiThread {
                         val speed = locomotive.speed
                         (findViewById<View>(R.id.speed) as TextView).text =
@@ -221,14 +219,14 @@ class SimpleClientActivity : AppCompatActivity() {
         }
 
         switchGroupSocket.webSocketObserver =
-            object : SwitchGroupWebSocketFacade.WebSocketObserver {
-                override fun switchGroupChanged(switchGroup: SwitchGroup) {
+            object : WebSocketFacade.WebSocketObserver<SwitchGroup> {
+                override fun objectReceived(receivedObject: SwitchGroup) {
                     runOnUiThread {
 
                         // store the locomotive locally, including it's ID
                         val dao = SwitchGroupDAO()
-                        dao.copy(switchGroup, this@SimpleClientActivity.switchGroup)
-                        this@SimpleClientActivity.switchGroup.id = switchGroup.id
+                        dao.copy(receivedObject, this@SimpleClientActivity.switchGroup)
+                        this@SimpleClientActivity.switchGroup.id = receivedObject.id
                     }
                 }
 
@@ -357,13 +355,13 @@ class SimpleClientActivity : AppCompatActivity() {
             false
         }
         craneSocket = CraneWebSocketClient()
-        craneSocket.webSocketObserver = object : CraneWebSocketFacade.WebSocketObserver {
-            override fun craneChanged(crane: Crane) {
+        craneSocket.webSocketObserver = object : WebSocketFacade.WebSocketObserver<Crane> {
+            override fun objectReceived(receivedObject: Crane) {
                 runOnUiThread {
                     // store the locomotive locally, including it's ID
                     val dao = CraneDAO()
-                    dao.copy(crane, this@SimpleClientActivity.crane)
-                    this@SimpleClientActivity.crane.id = crane.id
+                    dao.copy(receivedObject, this@SimpleClientActivity.crane)
+                    this@SimpleClientActivity.crane.id = receivedObject.id
                 }
             }
 
