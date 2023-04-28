@@ -1,4 +1,4 @@
-package de.ba.railroadclient.rest
+package de.ba.railroadclient
 
 import android.content.Context
 import android.os.Handler
@@ -34,10 +34,10 @@ import org.json.JSONArray
  */
 open class ServerListAdapter(
     context: Context,
-    private var serverURL: String?,
+    var serverURL: String?,
     private val requestQueue: RequestQueue,
     private val errorListener: Response.ErrorListener?
-) : ArrayAdapter<Server?>(context, R.layout.support_simple_spinner_dropdown_item) {
+) : ArrayAdapter<Server>(context, R.layout.support_simple_spinner_dropdown_item) {
 
     /**
      * the Update Handler is responsible for calling the update task
@@ -89,29 +89,22 @@ open class ServerListAdapter(
     }
 
     protected fun updateListItems(response: JSONArray) {
-        val newItems: MutableList<Server?> = ArrayList()
-        for (i in 0 until response.length()) try {
-            val `object` = response.getJSONObject(i)
-            val dao = ServerDAO()
-            newItems.add(dao.read(`object`.toString()))
-        } catch (t: Throwable) {
-            Log.e("main", "can not create JSON object", t)
-        }
-
-        // remove all older items
-        for (i in 0 until count) {
-            val item = getItem(i)
-            if (!newItems.contains(item)) {
-                remove(item)
+        val newItems = (0 until response.length())
+            .mapNotNull {
+                execute {
+                    ServerDAO.read(response.getJSONObject(it).toString())
+                }.getOrNull()
             }
-        }
+            .toMutableList()
+
+        (0 until count)
+            .mapNotNull { getItem(it) } // Erstellt eine Liste der Items, die nicht null sind
+            .filter { !newItems.contains(it) } // Filtert die Items, die nicht in `newItems` enthalten sind
+            .toMutableSet() // Konvertiert die Liste in ein MutableSet
+            .forEach { remove(it) } // Entferne die so ermittelten Items aus der Liste
 
         // add new items
-        for (i in newItems.indices) {
-            val item = newItems[i]
-            if (getPosition(item) < 0) {
-                add(item)
-            }
-        }
+        newItems.filter { getPosition(it) < 0 }
+            .forEach { add(it) }
     }
 }

@@ -1,39 +1,31 @@
-package de.ba.railroadclient.ws
+package de.ba.railroadclient
 
-import org.eclipse.jetty.websocket.client.WebSocketClient
-import ws.MessageAdapter
-import android.os.AsyncTask
 import android.util.Log
-import ws.CraneWebSocketFacade
-import de.ba.railroadclient.ws.ConnectTask
+import androidx.lifecycle.LifecycleCoroutineScope
+import kotlinx.coroutines.launch
+import org.eclipse.jetty.websocket.client.WebSocketClient
 import ws.LocomotiveWebSocketFacade
-import ws.SwitchGroupWebSocketFacade
-import ws.BarrierGroupWebSocketFacade
-import java.lang.Exception
+import ws.MessageAdapter
+import java.net.URI
 
 /**
  * Facade for the client to establish a WebSocket connection.
  * The method [.connect] works asynchronously, it will not block the
  * call thread.
+ *
+ * The creation of a connection is based on a given lifecycleScope.
  */
-class CraneWebSocketClient : CraneWebSocketFacade() {
+class LocomotiveWebSocketClient : LocomotiveWebSocketFacade() {
 
     /**
      * The client object is responsible for the connection.
      */
-    private val client: WebSocketClient
+    private val client = WebSocketClient()
 
     /**
      * The Locomotive client has only one MessageAdapter (= WebSocket)
      */
     private var webSocket: MessageAdapter? = null
-
-    /**
-     * Create a [WebSocketClient]
-     */
-    init {
-        client = WebSocketClient()
-    }
 
     /**
      * Start the PING/PONG game to keep connection open
@@ -42,8 +34,8 @@ class CraneWebSocketClient : CraneWebSocketFacade() {
         super.connectionEstablished(messageAdapter)
 
         // Start the ping/pong to keep connection alive
-        webSocket!!.ping()
-        Log.d("CraneWebSocketClient", "PING/PONG started")
+        webSocket?.ping()
+        Log.d(javaClass.name, "PING/PONG started")
     }
 
     /**
@@ -51,13 +43,9 @@ class CraneWebSocketClient : CraneWebSocketFacade() {
      *
      * @param url URL to a WebSocket server
      */
-    fun connect(url: String?) {
+    fun connect(url: String, scope: LifecycleCoroutineScope) {
         // Start the client
-        try {
-            client.start()
-        } catch (e: Exception) {
-            Log.d("CraneWebSocketClient", "can not start the websocket client", e)
-        }
+        execute(client::start, javaClass.name, "can not start the websocket client")
 
         // create or reuse a socket
         if (webSocket == null) {
@@ -65,18 +53,20 @@ class CraneWebSocketClient : CraneWebSocketFacade() {
         }
 
         // connect the client
-        ConnectTask(client, webSocket).execute(url)
+        scope.launch {
+            execute({
+                val echoUri = URI(url)
+                client.connect(webSocket, URI(url))
+                Log.d(javaClass.name, "Connecting to: $echoUri")
+            }, javaClass.name, "can not connect")
+        }
     }
 
     /**
      * Stop the [WebSocketClient].
      */
     fun disconnect() {
-        try {
-            // stop the client
-            client.stop()
-        } catch (e: Exception) {
-            Log.d("CraneWebSocketClient", "can not disconnect", e)
-        }
+        // Start the client
+        execute(client::stop, javaClass.name, "can not disconnect")
     }
 }

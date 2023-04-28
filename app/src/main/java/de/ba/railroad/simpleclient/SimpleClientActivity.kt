@@ -9,13 +9,14 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.Volley
-import de.ba.railroadclient.rest.ServerListAdapter
-import de.ba.railroadclient.ws.CraneWebSocketClient
-import de.ba.railroadclient.ws.LocomotiveWebSocketClient
-import de.ba.railroadclient.ws.SwitchGroupWebSocketClient
+import de.ba.railroadclient.CraneWebSocketClient
+import de.ba.railroadclient.ServerListAdapter
+import de.ba.railroadclient.LocomotiveWebSocketClient
+import de.ba.railroadclient.SwitchGroupWebSocketClient
 import model.*
 import ws.WebSocketFacade
 import java.text.MessageFormat
@@ -25,32 +26,32 @@ class SimpleClientActivity : AppCompatActivity() {
     /**
      * WebSocket connection to a locomotive server
      */
-    private var locomotiveSocket = LocomotiveWebSocketClient()
+    private val locomotiveSocket = LocomotiveWebSocketClient()
 
     /**
      * Locomotive to display and drive
      */
-    private var locomotive: Locomotive = LocomotivePOJO()
+    private val locomotive: Locomotive = LocomotivePOJO()
 
     /**
      * WebSocket connection to a switch group server
      */
-    private var switchGroupSocket = SwitchGroupWebSocketClient()
+    private val switchGroupSocket = SwitchGroupWebSocketClient()
 
     /**
      * SwitchGroup to display and switch
      */
-    private var switchGroup: SwitchGroup = SwitchGroupPOJO()
+    private val switchGroup: SwitchGroup = SwitchGroupPOJO()
 
     /**
      * WebSocket connection to a crane server
      */
-    private var craneSocket = CraneWebSocketClient()
+    private val craneSocket = CraneWebSocketClient()
 
     /**
      * Crane to display and switch
      */
-    private var crane: Crane = CranePOJO()
+    private val crane: Crane = CranePOJO()
 
     /**
      * Called on app creation.
@@ -87,7 +88,7 @@ class SimpleClientActivity : AppCompatActivity() {
 
         val locomotiveSpinner = findViewById<Spinner>(R.id.locomotiveSpinner)
         locomotiveSpinner.adapter = adapter
-        locomotive = LocomotivePOJO()
+
         locomotiveSpinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
@@ -100,7 +101,7 @@ class SimpleClientActivity : AppCompatActivity() {
 
                 // get the current locomotive server and connect
                 val locomotiveServer = parent.adapter.getItem(position) as Server
-                locomotiveSocket.connect(locomotiveServer.url)
+                locomotiveSocket.connect(locomotiveServer.url, lifecycleScope)
                 val errorView = findViewById<TextView>(R.id.locomotiveErrors)
                 errorView.text = locomotiveServer.url
             }
@@ -146,14 +147,13 @@ class SimpleClientActivity : AppCompatActivity() {
             object : WebSocketFacade.WebSocketObserver<Locomotive> {
                 override fun objectReceived(receivedObject: Locomotive) {
                     runOnUiThread {
-                        val speed = locomotive.speed
+                        val speed = receivedObject.speed
                         (findViewById<View>(R.id.speed) as TextView).text =
                             MessageFormat.format("{0}", speed)
 
                         // store the locomotive locally, including it's ID
-                        val dao = LocomotiveDAO()
-                        dao.copy(locomotive, this@SimpleClientActivity.locomotive)
-                        this@SimpleClientActivity.locomotive.id = locomotive.id
+                        LocomotiveDAO.copy(receivedObject, this@SimpleClientActivity.locomotive)
+                        this@SimpleClientActivity.locomotive.id = receivedObject.id
                     }
                 }
 
@@ -182,7 +182,7 @@ class SimpleClientActivity : AppCompatActivity() {
             ServerListAdapter(this, "$RAILROAD_SERVER/switch", requestQueue, switchErrorListener)
         val switchSpinner = findViewById<Spinner>(R.id.switchSpinner)
         switchSpinner.adapter = switchListAdapter
-        switchGroup = SwitchGroupPOJO()
+
         switchSpinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
@@ -195,7 +195,7 @@ class SimpleClientActivity : AppCompatActivity() {
 
                 // get the current locomotive server and connect
                 val switchServer = parent.adapter.getItem(position) as Server
-                switchGroupSocket.connect(switchServer.url)
+                switchGroupSocket.connect(switchServer.url, lifecycleScope)
                 val errorView = findViewById<TextView>(R.id.switchErrors)
                 errorView.text = switchServer.url
             }
@@ -224,8 +224,7 @@ class SimpleClientActivity : AppCompatActivity() {
                     runOnUiThread {
 
                         // store the locomotive locally, including it's ID
-                        val dao = SwitchGroupDAO()
-                        dao.copy(receivedObject, this@SimpleClientActivity.switchGroup)
+                        SwitchGroupDAO.copy(receivedObject, this@SimpleClientActivity.switchGroup)
                         this@SimpleClientActivity.switchGroup.id = receivedObject.id
                     }
                 }
@@ -255,7 +254,7 @@ class SimpleClientActivity : AppCompatActivity() {
             ServerListAdapter(this, "$RAILROAD_SERVER/crane", requestQueue, craneErrorListener)
         val craneSpinner = findViewById<Spinner>(R.id.craneSpinner)
         craneSpinner.adapter = craneListAdapter
-        crane = CranePOJO()
+
         craneSpinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
@@ -268,7 +267,7 @@ class SimpleClientActivity : AppCompatActivity() {
 
                 // get the current crane server and connect
                 val craneServer = parent.adapter.getItem(position) as Server
-                craneSocket.connect(craneServer.url)
+                craneSocket.connect(craneServer.url, lifecycleScope)
                 val errorView = findViewById<TextView>(R.id.craneErrors)
                 errorView.text = craneServer.url
             }
@@ -354,13 +353,12 @@ class SimpleClientActivity : AppCompatActivity() {
             }
             false
         }
-        craneSocket = CraneWebSocketClient()
+
         craneSocket.webSocketObserver = object : WebSocketFacade.WebSocketObserver<Crane> {
             override fun objectReceived(receivedObject: Crane) {
                 runOnUiThread {
                     // store the locomotive locally, including it's ID
-                    val dao = CraneDAO()
-                    dao.copy(receivedObject, this@SimpleClientActivity.crane)
+                    CraneDAO.copy(receivedObject, this@SimpleClientActivity.crane)
                     this@SimpleClientActivity.crane.id = receivedObject.id
                 }
             }
@@ -381,8 +379,8 @@ class SimpleClientActivity : AppCompatActivity() {
          * dv-git01     BA Virtual Development Server
          * 10.0.2.2     (local) Host for Android Emulator
          */
-        // private static final String RAILROAD_SERVER = "http://10.0.2.2:8095";
-        // private static final String RAILROAD_SERVER = "http://ise-rrs01.dv.ba-dresden.local:8095";
-        private const val RAILROAD_SERVER = "http://dv-git01.dv.ba-dresden.local:8095"
+        private const val RAILROAD_SERVER = "http://10.0.2.2:8095";
+        // private const val RAILROAD_SERVER = "http://ise-rrs01.dv.ba-dresden.local:8095";
+        // private const val RAILROAD_SERVER = "http://dv-git01.dv.ba-dresden.local:8095"
     }
 }

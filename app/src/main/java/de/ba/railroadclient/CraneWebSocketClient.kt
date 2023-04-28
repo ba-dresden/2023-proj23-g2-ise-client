@@ -1,32 +1,31 @@
-package de.ba.railroadclient.ws
+package de.ba.railroadclient
 
 import android.util.Log
+import androidx.lifecycle.LifecycleCoroutineScope
+import kotlinx.coroutines.launch
 import org.eclipse.jetty.websocket.client.WebSocketClient
-import ws.BarrierGroupWebSocketFacade
+import ws.CraneWebSocketFacade
 import ws.MessageAdapter
+import java.net.URI
 
 /**
  * Facade for the client to establish a WebSocket connection.
  * The method [.connect] works asynchronously, it will not block the
  * call thread.
+ *
+ * The creation of a connection is based on a given lifecycleScope.
  */
-class BarrierGroupWebSocketClient : BarrierGroupWebSocketFacade() {
+class CraneWebSocketClient : CraneWebSocketFacade() {
+
     /**
      * The client object is responsible for the connection.
      */
-    private val client: WebSocketClient
+    private val client = WebSocketClient()
 
     /**
      * The Locomotive client has only one MessageAdapter (= WebSocket)
      */
     private var webSocket: MessageAdapter? = null
-
-    /**
-     * Create a [WebSocketClient]
-     */
-    init {
-        client = WebSocketClient()
-    }
 
     /**
      * Start the PING/PONG game to keep connection open
@@ -35,8 +34,8 @@ class BarrierGroupWebSocketClient : BarrierGroupWebSocketFacade() {
         super.connectionEstablished(messageAdapter)
 
         // Start the ping/pong to keep connection alive
-        webSocket!!.ping()
-        Log.d("BarrierGroupWebSocketClient", "PING/PONG started")
+        webSocket?.ping()
+        Log.d(javaClass.name, "PING/PONG started")
     }
 
     /**
@@ -44,13 +43,9 @@ class BarrierGroupWebSocketClient : BarrierGroupWebSocketFacade() {
      *
      * @param url URL to a WebSocket server
      */
-    fun connect(url: String?) {
-        // Start the client
-        try {
-            client.start()
-        } catch (e: Exception) {
-            Log.d("BarrierGroupWebSocketClient", "can not start the websocket client", e)
-        }
+    fun connect(url: String, scope: LifecycleCoroutineScope) {
+        // start the client
+        execute(client::start, javaClass.name, "can not start the websocket client")
 
         // create or reuse a socket
         if (webSocket == null) {
@@ -58,18 +53,19 @@ class BarrierGroupWebSocketClient : BarrierGroupWebSocketFacade() {
         }
 
         // connect the client
-        ConnectTask(client, webSocket).execute(url)
+        scope.launch {
+            execute({
+                val echoUri = URI(url)
+                client.connect(webSocket, URI(url))
+                Log.d(javaClass.name, "Connecting to: $echoUri")
+            }, javaClass.name, "can not connect")
+        }
     }
 
     /**
      * Stop the [WebSocketClient].
      */
     fun disconnect() {
-        try {
-            // stop the client
-            client.stop()
-        } catch (e: Exception) {
-            Log.d("BarrierGroupWebSocketClient", "can not disconnect", e)
-        }
+        execute(client::stop, javaClass.name, "can not disconnect")
     }
 }
