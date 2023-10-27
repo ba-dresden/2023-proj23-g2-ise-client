@@ -1,27 +1,21 @@
 package de.ba.railroad.simpleclient
 
 import android.os.Bundle
-import android.util.Log
-import android.view.MotionEvent
-import android.view.View
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemSelectedListener
-import android.widget.Spinner
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.android.volley.Response
-import com.android.volley.VolleyError
-import com.android.volley.toolbox.Volley
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import de.ba.railroad.simpleclient.speedcontrol.SpeedControl
 import de.ba.railroadclient.CraneWebSocketClient
-import de.ba.railroadclient.ServerListAdapter
 import de.ba.railroadclient.LocomotiveWebSocketClient
 import de.ba.railroadclient.SwitchGroupWebSocketClient
 import model.*
-import ws.WebSocketFacade
-import java.text.MessageFormat
 
-class SimpleClientActivity : AppCompatActivity() {
+class SimpleClientActivity : ComponentActivity() {
 
     /**
      * WebSocket connection to a locomotive server
@@ -60,6 +54,16 @@ class SimpleClientActivity : AppCompatActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContent {
+            SpeedControl {
+                    var modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+            }
+        }
+    }
+}
+        /*
         setContentView(R.layout.activity_main)
 
         // create a request que for HTTP POST and GET
@@ -370,7 +374,6 @@ class SimpleClientActivity : AppCompatActivity() {
             }
         }
     }
-
     companion object {
         /**
          * URL of the RailroadServlet. This servlet knows all active locomotive servers
@@ -384,3 +387,6 @@ class SimpleClientActivity : AppCompatActivity() {
         // private const val RAILROAD_SERVER = "http://dv-git01.dv.ba-dresden.local:8095"
     }
 }
+*/
+
+

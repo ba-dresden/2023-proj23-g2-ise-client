@@ -1,7 +1,11 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+plugins {
+    id 'kotlin-android'
+    id 'com.android.application'
+    id 'com.google.relay' version '0.3.09'
+}
 
 android {
+
     compileSdk 34
 
     defaultConfig {
@@ -40,6 +44,7 @@ android {
     }
     namespace 'de.ba.railroad.simpleclient'
 }
+
 
 dependencies {
     implementation project(':ise-model')

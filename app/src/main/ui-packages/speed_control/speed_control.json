@@ -1,0 +1,253 @@
+{
+  "name": "speed_control",
+  "version": 32,
+  "source-key": {
+    "type": "figma",
+    "file": "HyjptjBv96f9rpNBhYy7cj",
+    "node": "112:9",
+    "version": "4427335575",
+    "component-id": "e845577b6e5c0c82bf610f626a0bfcaf7ba6f111"
+  },
+  "default": "SpeedControl",
+  "documentation": "For controlling the speed of the train",
+  "design": {
+    "atoms": [
+      {
+        "type": "group",
+        "id": "top_level",
+        "root": "true"
+      },
+      {
+        "type": "group",
+        "id": "Group 1"
+      },
+      {
+        "type": "vector",
+        "id": "MenuPlaceholder"
+      },
+      {
+        "type": "vector",
+        "id": "FastForwardButtonPlaceholder"
+      },
+      {
+        "type": "vector",
+        "id": "ForwardButtonPlaceholder"
+      },
+      {
+        "type": "vector",
+        "id": "StopButtonPlaceholder"
+      },
+      {
+        "type": "vector",
+        "id": "BackButtonPlaceholder"
+      },
+      {
+        "type": "vector",
+        "id": "FastBackPlaceholder"
+      }
+    ],
+    "modes": {
+      "SpeedControl": {
+        "rules": [
+          {
+            "id": "top_level",
+            "is-structured": "false",
+            "children": [
+              "Group 1"
+            ],
+            "clip-content": "false"
+          },
+          {
+            "id": "Group 1",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "316.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "63.0"
+              }
+            },
+            "is-structured": "false",
+            "children": [
+              "MenuPlaceholder",
+              "FastForwardButtonPlaceholder",
+              "ForwardButtonPlaceholder",
+              "StopButtonPlaceholder",
+              "BackButtonPlaceholder",
+              "FastBackPlaceholder"
+            ],
+            "clip-content": "false"
+          },
+          {
+            "id": "MenuPlaceholder",
+            "border-radius": "42.0",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "316.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "63.0"
+              }
+            },
+            "vector-content": "menu_placeholder.svg"
+          },
+          {
+            "id": "FastForwardButtonPlaceholder",
+            "border-radius": "46.0",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": "126.5"
+              },
+              "vertical": {
+                "attachment": "center",
+                "offset": "0.0"
+              }
+            },
+            "tap-handler": "$onFastForwardClick",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "55.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "55.0"
+              }
+            },
+            "vector-content": "fast_forward_button_placeholder.svg"
+          },
+          {
+            "id": "ForwardButtonPlaceholder",
+            "border-radius": "46.0",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": "64.5"
+              },
+              "vertical": {
+                "attachment": "center",
+                "offset": "1.0"
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "55.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "55.0"
+              }
+            },
+            "vector-content": "forward_button_placeholder.svg"
+          },
+          {
+            "id": "StopButtonPlaceholder",
+            "border-radius": "46.0",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": "0.5"
+              },
+              "vertical": {
+                "attachment": "center",
+                "offset": "0.0"
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "55.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "55.0"
+              }
+            },
+            "vector-content": "stop_button_placeholder.svg"
+          },
+          {
+            "id": "BackButtonPlaceholder",
+            "border-radius": "46.0",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": "-62.5"
+              },
+              "vertical": {
+                "attachment": "center",
+                "offset": "0.0"
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "55.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "55.0"
+              }
+            },
+            "vector-content": "back_button_placeholder.svg"
+          },
+          {
+            "id": "FastBackPlaceholder",
+            "border-radius": "46.0",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": "-124.5"
+              },
+              "vertical": {
+                "attachment": "center",
+                "offset": "0.0"
+              }
+            },
+            "tap-handler": "$onClickFastBack",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "55.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "55.0"
+              }
+            },
+            "vector-content": "fast_back_placeholder.svg"
+          }
+        ]
+      }
+    }
+  },
+  "parameters": {
+    "onFastForwardClick": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
+    "onClickFastBack": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    }
+  },
+  "previews": [
+    {
+      "design": "SpeedControl",
+      "size": {
+        "width": 316.0,
+        "height": 63.0
+      }
+    }
+  ],
+  "adin-component-search-paths": [],
+  "image-search-paths": [],
+  "vector-search-paths": []
+}
