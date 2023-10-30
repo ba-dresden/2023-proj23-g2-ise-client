@@ -5,7 +5,7 @@
     "type": "figma",
     "file": "HyjptjBv96f9rpNBhYy7cj",
     "node": "112:9",
-    "version": "4427335575",
+    "version": "4436650219",
     "component-id": "e845577b6e5c0c82bf610f626a0bfcaf7ba6f111"
   },
   "default": "SpeedControl",
@@ -134,6 +134,7 @@
                 "offset": "1.0"
               }
             },
+            "tap-handler": "$onForwardButtonClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "fixed",
@@ -159,6 +160,7 @@
                 "offset": "0.0"
               }
             },
+            "tap-handler": "$onStopButtonClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "fixed",
@@ -184,6 +186,7 @@
                 "offset": "0.0"
               }
             },
+            "tap-handler": "$onBackButtonClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "fixed",
@@ -209,7 +212,7 @@
                 "offset": "0.0"
               }
             },
-            "tap-handler": "$onClickFastBack",
+            "tap-handler": "$onFastBackButtonClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "fixed",
@@ -232,7 +235,22 @@
       "required": false,
       "description": ""
     },
-    "onClickFastBack": {
+    "onForwardButtonClick": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
+    "onStopButtonClick": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
+    "onBackButtonClick": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
+    "onFastBackButtonClick": {
       "data-type": "void-callback",
       "required": false,
       "description": ""

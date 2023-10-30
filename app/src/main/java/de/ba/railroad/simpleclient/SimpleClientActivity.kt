@@ -3,12 +3,20 @@ package de.ba.railroad.simpleclient
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.google.relay.compose.BoxScopeInstanceImpl.align
+import com.google.relay.compose.RelayBox
+import com.google.relay.compose.RelayColumn
+import com.google.relay.compose.RelayContainer
 import de.ba.railroad.simpleclient.speedcontrol.SpeedControl
 import de.ba.railroadclient.CraneWebSocketClient
 import de.ba.railroadclient.LocomotiveWebSocketClient
@@ -55,13 +63,25 @@ class SimpleClientActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            SpeedControl {
-                    var modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
+            MaterialTheme {
+                RelayContainer {
+                    RelayBox(modifier = Modifier.fillMaxSize()){
+                        SpeedControl(
+                                onFastForwardClick = {},
+                                onForwardButtonClick = {},
+                                onStopButtonClick = {},
+                                onBackButtonClick = {},
+                                onFastBackButtonClick = {},
+                                modifier = Modifier.align(Alignment.BottomCenter)
+
+                        )
+                    }
+
+                }
             }
         }
     }
+
 }
         /*
         setContentView(R.layout.activity_main)
