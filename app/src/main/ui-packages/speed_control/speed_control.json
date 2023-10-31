@@ -4,12 +4,11 @@
   "source-key": {
     "type": "figma",
     "file": "HyjptjBv96f9rpNBhYy7cj",
-    "node": "112:9",
-    "version": "4436650219",
-    "component-id": "e845577b6e5c0c82bf610f626a0bfcaf7ba6f111"
+    "node": "165:13",
+    "version": "4443654907",
+    "component-id": "e9d33f0c55678e67bc7121c3de0e91d210b3ca7b"
   },
   "default": "SpeedControl",
-  "documentation": "For controlling the speed of the train",
   "design": {
     "atoms": [
       {
@@ -31,11 +30,7 @@
       },
       {
         "type": "vector",
-        "id": "ForwardButtonPlaceholder"
-      },
-      {
-        "type": "vector",
-        "id": "StopButtonPlaceholder"
+        "id": "FastBackPlaceholder"
       },
       {
         "type": "vector",
@@ -43,7 +38,11 @@
       },
       {
         "type": "vector",
-        "id": "FastBackPlaceholder"
+        "id": "StopButtonPlaceholder"
+      },
+      {
+        "type": "vector",
+        "id": "ForwardButtonPlaceholder"
       }
     ],
     "modes": {
@@ -51,11 +50,27 @@
         "rules": [
           {
             "id": "top_level",
-            "is-structured": "false",
+            "padding": "16.0",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "shrink"
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "main-axis-align": "start",
+            "cross-axis-align": "start",
             "children": [
               "Group 1"
             ],
-            "clip-content": "false"
+            "item-spacing": "16.0",
+            "background-color": {
+              "alpha": "1.0",
+              "hue": "32.3076923076923",
+              "saturation": "0.051587301587301626",
+              "value": "0.9882352941176471"
+            }
           },
           {
             "id": "Group 1",
@@ -73,10 +88,10 @@
             "children": [
               "MenuPlaceholder",
               "FastForwardButtonPlaceholder",
-              "ForwardButtonPlaceholder",
-              "StopButtonPlaceholder",
+              "FastBackPlaceholder",
               "BackButtonPlaceholder",
-              "FastBackPlaceholder"
+              "StopButtonPlaceholder",
+              "ForwardButtonPlaceholder"
             ],
             "clip-content": "false"
           },
@@ -100,15 +115,14 @@
             "border-radius": "46.0",
             "alignment": {
               "horizontal": {
-                "attachment": "center",
-                "offset": "126.5"
+                "attachment": "start",
+                "offset": "257.0"
               },
               "vertical": {
-                "attachment": "center",
-                "offset": "0.0"
+                "attachment": "start",
+                "offset": "3.0"
               }
             },
-            "tap-handler": "$onFastForwardClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "fixed",
@@ -122,19 +136,18 @@
             "vector-content": "fast_forward_button_placeholder.svg"
           },
           {
-            "id": "ForwardButtonPlaceholder",
+            "id": "FastBackPlaceholder",
             "border-radius": "46.0",
             "alignment": {
               "horizontal": {
-                "attachment": "center",
-                "offset": "64.5"
+                "attachment": "start",
+                "offset": "197.0"
               },
               "vertical": {
-                "attachment": "center",
-                "offset": "1.0"
+                "attachment": "start",
+                "offset": "3.0"
               }
             },
-            "tap-handler": "$onForwardButtonClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "fixed",
@@ -145,48 +158,21 @@
                 "value": "55.0"
               }
             },
-            "vector-content": "forward_button_placeholder.svg"
-          },
-          {
-            "id": "StopButtonPlaceholder",
-            "border-radius": "46.0",
-            "alignment": {
-              "horizontal": {
-                "attachment": "center",
-                "offset": "0.5"
-              },
-              "vertical": {
-                "attachment": "center",
-                "offset": "0.0"
-              }
-            },
-            "tap-handler": "$onStopButtonClick",
-            "size-constraints": {
-              "width-constraints": {
-                "sizing-mode": "fixed",
-                "value": "55.0"
-              },
-              "height-constraints": {
-                "sizing-mode": "fixed",
-                "value": "55.0"
-              }
-            },
-            "vector-content": "stop_button_placeholder.svg"
+            "vector-content": "fast_back_placeholder.svg"
           },
           {
             "id": "BackButtonPlaceholder",
             "border-radius": "46.0",
             "alignment": {
               "horizontal": {
-                "attachment": "center",
-                "offset": "-62.5"
+                "attachment": "start",
+                "offset": "134.0"
               },
               "vertical": {
-                "attachment": "center",
-                "offset": "0.0"
+                "attachment": "start",
+                "offset": "3.0"
               }
             },
-            "tap-handler": "$onBackButtonClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "fixed",
@@ -200,19 +186,18 @@
             "vector-content": "back_button_placeholder.svg"
           },
           {
-            "id": "FastBackPlaceholder",
+            "id": "StopButtonPlaceholder",
             "border-radius": "46.0",
             "alignment": {
               "horizontal": {
-                "attachment": "center",
-                "offset": "-124.5"
+                "attachment": "start",
+                "offset": "70.0"
               },
               "vertical": {
-                "attachment": "center",
-                "offset": "0.0"
+                "attachment": "start",
+                "offset": "3.0"
               }
             },
-            "tap-handler": "$onFastBackButtonClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "fixed",
@@ -223,45 +208,43 @@
                 "value": "55.0"
               }
             },
-            "vector-content": "fast_back_placeholder.svg"
+            "vector-content": "stop_button_placeholder.svg"
+          },
+          {
+            "id": "ForwardButtonPlaceholder",
+            "border-radius": "46.0",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": "8.0"
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": "3.0"
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "55.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "55.0"
+              }
+            },
+            "vector-content": "forward_button_placeholder.svg"
           }
         ]
       }
-    }
-  },
-  "parameters": {
-    "onFastForwardClick": {
-      "data-type": "void-callback",
-      "required": false,
-      "description": ""
-    },
-    "onForwardButtonClick": {
-      "data-type": "void-callback",
-      "required": false,
-      "description": ""
-    },
-    "onStopButtonClick": {
-      "data-type": "void-callback",
-      "required": false,
-      "description": ""
-    },
-    "onBackButtonClick": {
-      "data-type": "void-callback",
-      "required": false,
-      "description": ""
-    },
-    "onFastBackButtonClick": {
-      "data-type": "void-callback",
-      "required": false,
-      "description": ""
     }
   },
   "previews": [
     {
       "design": "SpeedControl",
       "size": {
-        "width": 316.0,
-        "height": 63.0
+        "width": 348.0,
+        "height": 95.0
       }
     }
   ],
