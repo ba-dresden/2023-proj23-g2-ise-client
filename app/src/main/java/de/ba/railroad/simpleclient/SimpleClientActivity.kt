@@ -88,13 +88,132 @@ class SimpleClientActivity : ComponentActivity() {
                         )
                         {
 
-                                SpeedControl()
+                                SpeedControl(
+
+                                        onFastForwardClick = {
+                                            locomotive.direction = Locomotive.DIRECTION_FORWARD
+                                            locomotive.speed = 100
+                                            locomotiveSocket.sendLocomotive(locomotive)
+                                        },
+                                        onForwardButtonClick = {
+                                            locomotive.direction = Locomotive.DIRECTION_FORWARD
+                                            locomotive.speed = 20
+                                            locomotiveSocket.sendLocomotive(locomotive)
+                                        },
+                                        onStopButtonClick = {
+                                            locomotive.speed = 0
+                                            locomotiveSocket.sendLocomotive(locomotive)
+                                        },
+                                        onBackButtonClick = {
+                                            locomotive.direction = Locomotive.DIRECTION_BACKWARD
+                                            locomotive.speed = 20
+                                            locomotiveSocket.sendLocomotive(locomotive)
+                                        },
+                                        onFastBackButtonClick = {
+                                            locomotive.direction = Locomotive.DIRECTION_BACKWARD
+                                            locomotive.speed = 100
+                                            locomotiveSocket.sendLocomotive(locomotive)
+                                        }
+                                )
 
                         }
                     }
                 }
             }
         }
+    }
+
+    // Add this line to your gradle dependencies for your Android project's app module:
+    //
+    //implementation 'com.android.volley:volley:1.1.1'
+    // https://stackoverflow.com/questions/20059576/import-android-volley-to-android-studio
+
+
+
+
+    // create a request que for HTTP POST and GET
+    val requestQueue = Volley.newRequestQueue(this)
+
+    // -------------------------------------------------------------------------------
+    //
+    //                  Locomotive
+    //
+    // -------------------------------------------------------------------------------
+
+    // listener to display errors
+    val locomotiveErrorListener = Response.ErrorListener { error: VolleyError ->
+        val errorView = findViewById<TextView>(R.id.locomotiveErrors)
+        errorView.text = error.message
+    }
+
+    // Adapter for the locomotiveSpinner view element. If we add or remove a LocomotiveServer
+    // here, the view will be updated and the user can select this server to control a locomotive
+    val adapter = ServerListAdapter(
+            this,
+            "$RAILROAD_SERVER/locomotive",
+            requestQueue,
+            locomotiveErrorListener
+    )
+
+    val locomotiveSpinner = findViewById<Spinner>(R.id.locomotiveSpinner)
+    locomotiveSpinner.adapter = adapter
+
+    locomotiveSpinner.onItemSelectedListener = object : OnItemSelectedListener {
+        override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+        ) {
+            // disconnect from current server
+            locomotiveSocket.disconnect()
+
+            // get the current locomotive server and connect
+            val locomotiveServer = parent.adapter.getItem(position) as Server
+            locomotiveSocket.connect(locomotiveServer.url, lifecycleScope)
+            val errorView = findViewById<TextView>(R.id.locomotiveErrors)
+            errorView.text = locomotiveServer.url
+        }
+
+        override fun onNothingSelected(parent: AdapterView<*>?) {
+            locomotiveSocket.disconnect()
+            Log.d("main", "nothing selected")
+        }
+    }
+
+
+
+    locomotiveSocket.webSocketObserver =
+    object : WebSocketFacade.WebSocketObserver<Locomotive> {
+        override fun objectReceived(receivedObject: Locomotive) {
+            runOnUiThread {
+                val speed = receivedObject.speed
+                (findViewById<View>(R.id.speed) as TextView).text =
+                        MessageFormat.format("{0}", speed)
+
+                // store the locomotive locally, including it's ID
+                LocomotiveDAO.copy(receivedObject, this@SimpleClientActivity.locomotive)
+                this@SimpleClientActivity.locomotive.id = receivedObject.id
+            }
+        }
+
+        override fun connectionEstablished() {}
+        override fun connectionClosed() {}
+        override fun errorOccurred(throwable: Throwable) {
+            findViewById<Spinner>(R.id.locomotiveSpinner).setSelection(-1)
+        }
+    }
+    companion object {
+        /**
+         * URL of the RailroadServlet. This servlet knows all active locomotive servers
+         *
+         * ise-rrs01    Vitrine
+         * dv-git01     BA Virtual Development Server
+         * 10.0.2.2     (local) Host for Android Emulator
+         */
+        private const val RAILROAD_SERVER = "http://10.0.2.2:8095";
+        // private const val RAILROAD_SERVER = "http://ise-rrs01.dv.ba-dresden.local:8095";
+        // private const val RAILROAD_SERVER = "http://dv-git01.dv.ba-dresden.local:8095"
     }
 
 }
