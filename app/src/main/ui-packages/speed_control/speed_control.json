@@ -5,7 +5,7 @@
     "type": "figma",
     "file": "HyjptjBv96f9rpNBhYy7cj",
     "node": "165:13",
-    "version": "4443654907",
+    "version": "4450787148",
     "component-id": "e9d33f0c55678e67bc7121c3de0e91d210b3ca7b"
   },
   "default": "SpeedControl",
@@ -29,8 +29,16 @@
         "id": "FastForwardButtonPlaceholder"
       },
       {
+        "type": "group",
+        "id": "Group 2"
+      },
+      {
         "type": "vector",
         "id": "FastBackPlaceholder"
+      },
+      {
+        "type": "vector",
+        "id": "ForwardArrow"
       },
       {
         "type": "vector",
@@ -38,11 +46,35 @@
       },
       {
         "type": "vector",
+        "id": "StopSymbol"
+      },
+      {
+        "type": "vector",
         "id": "StopButtonPlaceholder"
       },
       {
         "type": "vector",
+        "id": "BackArrow"
+      },
+      {
+        "type": "vector",
         "id": "ForwardButtonPlaceholder"
+      },
+      {
+        "type": "vector",
+        "id": "BackArrow1"
+      },
+      {
+        "type": "vector",
+        "id": "FastBackArrow"
+      },
+      {
+        "type": "vector",
+        "id": "ForwardArrow1"
+      },
+      {
+        "type": "vector",
+        "id": "FastForwardArrow"
       }
     ],
     "modes": {
@@ -66,7 +98,7 @@
             ],
             "item-spacing": "16.0",
             "background-color": {
-              "alpha": "1.0",
+              "alpha": "0.0",
               "hue": "32.3076923076923",
               "saturation": "0.051587301587301626",
               "value": "0.9882352941176471"
@@ -88,10 +120,16 @@
             "children": [
               "MenuPlaceholder",
               "FastForwardButtonPlaceholder",
+              "Group 2",
               "FastBackPlaceholder",
+              "ForwardArrow",
               "BackButtonPlaceholder",
+              "StopSymbol",
               "StopButtonPlaceholder",
-              "ForwardButtonPlaceholder"
+              "BackArrow",
+              "ForwardButtonPlaceholder",
+              "BackArrow1",
+              "FastBackArrow"
             ],
             "clip-content": "false"
           },
@@ -120,9 +158,10 @@
               },
               "vertical": {
                 "attachment": "start",
-                "offset": "3.0"
+                "offset": "4.0"
               }
             },
+            "tap-handler": "$onFastForwardClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "fixed",
@@ -136,6 +175,36 @@
             "vector-content": "fast_forward_button_placeholder.svg"
           },
           {
+            "id": "Group 2",
+            "border-radius": "1.0",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": "270.0"
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": "20.0"
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "30.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "24.0"
+              }
+            },
+            "is-structured": "false",
+            "children": [
+              "ForwardArrow1",
+              "FastForwardArrow"
+            ],
+            "clip-content": "false"
+          },
+          {
             "id": "FastBackPlaceholder",
             "border-radius": "46.0",
             "alignment": {
@@ -145,9 +214,10 @@
               },
               "vertical": {
                 "attachment": "start",
-                "offset": "3.0"
+                "offset": "4.0"
               }
             },
+            "tap-handler": "$onForwardButtonClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "fixed",
@@ -161,6 +231,31 @@
             "vector-content": "fast_back_placeholder.svg"
           },
           {
+            "id": "ForwardArrow",
+            "border-radius": "1.0",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": "218.49999868869781"
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": "23.417726039886475"
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "24.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "22.0"
+              }
+            },
+            "vector-content": "forward_arrow.svg"
+          },
+          {
             "id": "BackButtonPlaceholder",
             "border-radius": "46.0",
             "alignment": {
@@ -170,9 +265,10 @@
               },
               "vertical": {
                 "attachment": "start",
-                "offset": "3.0"
+                "offset": "4.0"
               }
             },
+            "tap-handler": "$onStopButtonClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "fixed",
@@ -186,6 +282,31 @@
             "vector-content": "back_button_placeholder.svg"
           },
           {
+            "id": "StopSymbol",
+            "border-radius": "2.0",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": "152.0"
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": "22.0"
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "20.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "20.0"
+              }
+            },
+            "vector-content": "stop_symbol.svg"
+          },
+          {
             "id": "StopButtonPlaceholder",
             "border-radius": "46.0",
             "alignment": {
@@ -195,9 +316,10 @@
               },
               "vertical": {
                 "attachment": "start",
-                "offset": "3.0"
+                "offset": "4.0"
               }
             },
+            "tap-handler": "$onBackButtonClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "fixed",
@@ -211,18 +333,44 @@
             "vector-content": "stop_button_placeholder.svg"
           },
           {
+            "id": "BackArrow",
+            "border-radius": "1.0",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": "86.87646877765656"
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": "23.417720317840576"
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "24.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "22.0"
+              }
+            },
+            "vector-content": "back_arrow.svg"
+          },
+          {
             "id": "ForwardButtonPlaceholder",
             "border-radius": "46.0",
             "alignment": {
               "horizontal": {
                 "attachment": "start",
-                "offset": "8.0"
+                "offset": "4.0"
               },
               "vertical": {
                 "attachment": "start",
-                "offset": "3.0"
+                "offset": "4.0"
               }
             },
+            "tap-handler": "$onFastBackButtonClick",
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "fixed",
@@ -234,9 +382,136 @@
               }
             },
             "vector-content": "forward_button_placeholder.svg"
+          },
+          {
+            "id": "BackArrow1",
+            "border-radius": "1.0",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": "24.876468777656555"
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": "23.417720317840576"
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "24.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "22.0"
+              }
+            },
+            "vector-content": "back_arrow1.svg"
+          },
+          {
+            "id": "FastBackArrow",
+            "border-radius": "1.0",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": "16.876468777656555"
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": "23.417720317840576"
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "24.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "22.0"
+              }
+            },
+            "vector-content": "fast_back_arrow.svg"
+          },
+          {
+            "id": "ForwardArrow1",
+            "border-radius": "1.0",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": "4.500003695487976"
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": "3.417728900909424"
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "24.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "22.0"
+              }
+            },
+            "vector-content": "forward_arrow1.svg"
+          },
+          {
+            "id": "FastForwardArrow",
+            "border-radius": "1.0",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": "12.500003695487976"
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": "3.417728900909424"
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "24.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "22.0"
+              }
+            },
+            "vector-content": "fast_forward_arrow.svg"
           }
         ]
       }
+    }
+  },
+  "parameters": {
+    "onFastForwardClick": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
+    "onForwardButtonClick": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
+    "onStopButtonClick": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
+    "onBackButtonClick": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
+    "onFastBackButtonClick": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
     }
   },
   "previews": [
