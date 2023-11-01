@@ -87,19 +87,14 @@ class SimpleClientActivity : ComponentActivity() {
                             verticalArrangement = Arrangement.Bottom
                         )
                         {
-                            RelayContainer {
-                                toolBar()
-                            }
+
+                                SpeedControl()
+
                         }
                     }
                 }
             }
         }
-    }
-    @Preview
-    @Composable
-    fun toolBar() {
-        SpeedControl()
     }
 
 }
