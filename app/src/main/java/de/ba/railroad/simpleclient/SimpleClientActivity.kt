@@ -33,8 +33,6 @@ import com.google.relay.compose.BoxScopeInstanceImpl.align
 import com.google.relay.compose.RelayBox
 import com.google.relay.compose.RelayColumn
 import com.google.relay.compose.RelayContainer
-import de.ba.railroad.simpleclient.default.Default
-import de.ba.railroad.simpleclient.default.Property1
 import de.ba.railroad.simpleclient.speedcontrol.SpeedControl
 import de.ba.railroadclient.CraneWebSocketClient
 import de.ba.railroadclient.LocomotiveWebSocketClient
@@ -42,7 +40,6 @@ import de.ba.railroadclient.SwitchGroupWebSocketClient
 import model.*
 class SimpleClientActivity : ComponentActivity() {
 
-    lateinit var p:Unit
     /**
      * WebSocket connection to a locomotive server
      */
@@ -78,6 +75,7 @@ class SimpleClientActivity : ComponentActivity() {
      *
      * @param savedInstanceState params given to app, e.g. file associations
      */
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -98,27 +96,15 @@ class SimpleClientActivity : ComponentActivity() {
                         {
 
                                 SpeedControl()
-                                invokeButton(false)
+                                val checkedState = remember{ mutableStateOf(false) }
                         }
                     }
                 }
             }
         }
     }
-
-   @Composable
-   fun invokeButton(value: Boolean) {
-       val checkedState = remember{ mutableStateOf(value) }
-       Default(unpressed = checkedState.value,
-               normalClick = {
-                   if(checkedState.value){
-
-                   }
-               })
-   }
-
-
 }
+
         /*
         setContentView(R.layout.activity_main)
 
