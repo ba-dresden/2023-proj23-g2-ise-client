@@ -1,0 +1,181 @@
+{
+  "name": "default",
+  "version": 32,
+  "source-key": {
+    "type": "figma",
+    "file": "HyjptjBv96f9rpNBhYy7cj",
+    "node": "204:49",
+    "version": "4458589498",
+    "component-id": "74719d553ba0c8623079b5174d3aff6ffcf89960"
+  },
+  "default": "Property 1=normal",
+  "design": {
+    "atoms": [
+      {
+        "type": "group",
+        "id": "top_level",
+        "root": "true"
+      },
+      {
+        "type": "text",
+        "id": "Unpressed"
+      },
+      {
+        "type": "text",
+        "id": "Pressed"
+      }
+    ],
+    "modes": {
+      "Property 1=normal": {
+        "rules": [
+          {
+            "id": "top_level",
+            "tap-handler": "$normalClick",
+            "is-structured": "false",
+            "children": [
+              "Unpressed"
+            ],
+            "background-color": {
+              "alpha": "1.0",
+              "hue": "212.59259259259258",
+              "saturation": "0.6352941176470588",
+              "value": "1.0"
+            }
+          },
+          {
+            "id": "Unpressed",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": "0.0"
+              },
+              "vertical": {
+                "attachment": "center",
+                "offset": "0.0"
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "100.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "40.0"
+              }
+            },
+            "color": {
+              "alpha": "1.0",
+              "hue": "0.0",
+              "saturation": "0.0",
+              "value": "1.0"
+            },
+            "text-content": "Unpressed",
+            "overflow": "visible",
+            "max-lines": "-1",
+            "text-align-vertical": "center",
+            "line-height": "1.2102272851126534",
+            "typeface": "Inter"
+          }
+        ]
+      },
+      "Property 1=pressed": {
+        "rules": [
+          {
+            "id": "top_level",
+            "drop-shadow": {
+              "color": {
+                "alpha": "0.24705882352941178",
+                "hue": "0.0",
+                "saturation": "0.0",
+                "value": "0.0"
+              },
+              "blur": "4.0",
+              "offset-x": "0.0",
+              "offset-y": "4.0",
+              "spread": "0.0",
+              "blend-mode": "normal"
+            },
+            "tap-handler": "$normalClick",
+            "is-structured": "false",
+            "children": [
+              "Pressed"
+            ],
+            "background-color": {
+              "alpha": "1.0",
+              "hue": "212.4418604651163",
+              "saturation": "1.0",
+              "value": "0.6745098039215687"
+            }
+          },
+          {
+            "id": "Pressed",
+            "alignment": {
+              "horizontal": {
+                "attachment": "center",
+                "offset": "0.0"
+              },
+              "vertical": {
+                "attachment": "center",
+                "offset": "0.0"
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "100.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "40.0"
+              }
+            },
+            "color": {
+              "alpha": "1.0",
+              "hue": "0.0",
+              "saturation": "0.0",
+              "value": "1.0"
+            },
+            "text-content": "Pressed",
+            "overflow": "visible",
+            "max-lines": "-1",
+            "text-align-vertical": "center",
+            "line-height": "1.2102272851126534",
+            "typeface": "Inter"
+          }
+        ]
+      }
+    }
+  },
+  "parameters": {
+    "normalClick": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
+    "unpressed": {
+      "data-type": "boolean",
+      "required": false,
+      "description": ""
+    }
+  },
+  "previews": [
+    {
+      "design": "Property 1=normal",
+      "size": {
+        "width": 100.0,
+        "height": 40.0
+      }
+    },
+    {
+      "design": "Property 1=pressed",
+      "size": {
+        "width": 100.0,
+        "height": 40.0
+      }
+    }
+  ],
+  "adin-component-search-paths": [],
+  "image-search-paths": [],
+  "vector-search-paths": []
+}

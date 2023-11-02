@@ -14,26 +14,35 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.DefaultTranslationX
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.relay.compose.BoxScopeInstanceImpl.align
 import com.google.relay.compose.RelayBox
 import com.google.relay.compose.RelayColumn
 import com.google.relay.compose.RelayContainer
+import de.ba.railroad.simpleclient.default.Default
+import de.ba.railroad.simpleclient.default.Property1
 import de.ba.railroad.simpleclient.speedcontrol.SpeedControl
 import de.ba.railroadclient.CraneWebSocketClient
 import de.ba.railroadclient.LocomotiveWebSocketClient
 import de.ba.railroadclient.SwitchGroupWebSocketClient
 import model.*
-
 class SimpleClientActivity : ComponentActivity() {
 
+    lateinit var p:Unit
     /**
      * WebSocket connection to a locomotive server
      */
@@ -89,13 +98,25 @@ class SimpleClientActivity : ComponentActivity() {
                         {
 
                                 SpeedControl()
-
+                                invokeButton(false)
                         }
                     }
                 }
             }
         }
     }
+
+   @Composable
+   fun invokeButton(value: Boolean) {
+       val checkedState = remember{ mutableStateOf(value) }
+       Default(unpressed = checkedState.value,
+               normalClick = {
+                   if(checkedState.value){
+
+                   }
+               })
+   }
+
 
 }
         /*
