@@ -29,10 +29,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.DefaultTranslationX
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import com.google.relay.compose.BoxScopeInstanceImpl.align
 import com.google.relay.compose.RelayBox
 import com.google.relay.compose.RelayColumn
 import com.google.relay.compose.RelayContainer
+import de.ba.railroad.simpleclient.buttonlocomotiverenate.ButtonLocomotiveRenate
 import de.ba.railroad.simpleclient.speedcontrol.SpeedControl
 import de.ba.railroadclient.CraneWebSocketClient
 import de.ba.railroadclient.LocomotiveWebSocketClient
@@ -94,8 +96,41 @@ class SimpleClientActivity : ComponentActivity() {
                             verticalArrangement = Arrangement.Bottom
                         )
                         {
+                                ButtonLocomotiveRenate(
+                                        text = "Click Me - I'm Renate!?!",
+                                        onClick = {
+                                            //val locomotiveSpinner = findViewById<Spinner>(R.id.locomotiveSpinner)
+                                            //locomotiveSpinner.adapter = adapter
+                                            // get the current locomotive server and connect
+                                            val locomotiveServer = parent.adapter.getItem(position) as Server
+                                            locomotiveSocket.connect(locomotiveServer.url, lifecycleScope)
+                                            //val errorView = findViewById<TextView>(R.id.locomotiveErrors)
+                                            //errorView.text = locomotiveServer.url
 
-                                SpeedControl()
+                                        }
+
+                                )
+                                SpeedControl(
+                                        onFastForwardClick  = {},
+                                        onForwardButtonClick = {},
+                                        onStopButtonClick  = {
+                                            locomotive.direction = Locomotive.DIRECTION_BACKWARD
+                                            locomotive.speed = 20
+                                            locomotiveSocket.sendLocomotive(locomotive)
+                                        },
+                                        onBackButtonClick  = {
+                                            locomotive.direction = Locomotive.DIRECTION_BACKWARD
+                                            locomotive.speed = 20
+                                            locomotiveSocket.sendLocomotive(locomotive)
+                                        },
+                                        onFastBackButtonClick = {
+                                            locomotive.direction = Locomotive.DIRECTION_BACKWARD
+                                            locomotive.speed = 100
+                                            locomotiveSocket.sendLocomotive(locomotive)
+                                        }
+
+
+                                )
                                 val checkedState = remember{ mutableStateOf(false) }
                         }
                     }
