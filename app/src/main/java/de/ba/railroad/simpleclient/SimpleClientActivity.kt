@@ -2,6 +2,8 @@ package de.ba.railroad.simpleclient
 
 import android.icu.text.CaseMap.Title
 import android.os.Bundle
+import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,7 +15,12 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -22,6 +29,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.android.volley.Response
+import com.android.volley.VolleyError
+import com.android.volley.toolbox.Volley
 import com.google.relay.compose.BoxScopeInstanceImpl.align
 import com.google.relay.compose.RelayBox
 import com.google.relay.compose.RelayColumn
@@ -29,8 +39,10 @@ import com.google.relay.compose.RelayContainer
 import de.ba.railroad.simpleclient.speedcontrol.SpeedControl
 import de.ba.railroadclient.CraneWebSocketClient
 import de.ba.railroadclient.LocomotiveWebSocketClient
+import de.ba.railroadclient.ServerListAdapter
 import de.ba.railroadclient.SwitchGroupWebSocketClient
 import model.*
+import ws.WebSocketFacade
 
 class SimpleClientActivity : ComponentActivity() {
 
@@ -71,6 +83,80 @@ class SimpleClientActivity : ComponentActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val requestQueue = Volley.newRequestQueue(this)
+
+
+        // -------------------------------------------------------------------------------
+        //
+        //                  Locomotive
+        //
+        // -------------------------------------------------------------------------------
+
+        val locomotiveErrorListener = Response.ErrorListener { error: VolleyError ->
+            // to do: compose "Dialog"
+            error.message
+        }
+
+        // Adapter for the locomotiveSpinner view element. If we add or remove a LocomotiveServer
+        // here, the view will be updated and the user can select this server to control a locomotive
+        val adapter = ServerListAdapter(
+                this,
+                "$RAILROAD_SERVER/locomotive",
+                requestQueue,
+                locomotiveErrorListener
+        )
+
+/*
+                val locomotiveSpinner = findViewById<Spinner>(R.id.locomotiveSpinner)
+                locomotiveSpinner.adapter = adapter
+
+                locomotiveSpinner.onItemSelectedListener = object : OnItemSelectedListener {
+                    override fun onItemSelected(
+                            parent: AdapterView<*>,
+                            view: View,
+                            position: Int,
+                            id: Long
+                    ) {
+                        // disconnect from current server
+                        locomotiveSocket.disconnect()
+
+                        // get the current locomotive server and connect
+                        val locomotiveServer = parent.adapter.getItem(position) as Server
+                        locomotiveSocket.connect(locomotiveServer.url, lifecycleScope)
+                        val errorView = findViewById<TextView>(R.id.locomotiveErrors)
+                        errorView.text = locomotiveServer.url
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        locomotiveSocket.disconnect()
+                        Log.d("main", "nothing selected")
+                    }
+                }
+
+
+                locomotiveSocket.webSocketObserver =
+                        object : WebSocketFacade.WebSocketObserver<Locomotive> {
+                            override fun objectReceived(receivedObject: Locomotive) {
+                                runOnUiThread {
+                                    val speed = receivedObject.speed
+                                    (findViewById<View>(R.id.speed) as TextView).text =
+                                            MessageFormat.format("{0}", speed)
+
+                                    // store the locomotive locally, including it's ID
+                                    LocomotiveDAO.copy(receivedObject, this@SimpleClientActivity.locomotive)
+                                    this@SimpleClientActivity.locomotive.id = receivedObject.id
+                                }
+                            }
+
+                            override fun connectionEstablished() {}
+                            override fun connectionClosed() {}
+                            override fun errorOccurred(throwable: Throwable) {
+                                findViewById<Spinner>(R.id.locomotiveSpinner).setSelection(-1)
+                            }
+                        }
+*/
+
         setContent {
             MaterialTheme {
                 Surface (
@@ -86,8 +172,14 @@ class SimpleClientActivity : ComponentActivity() {
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Bottom
                         )
-                        {
 
+                        {
+                                Example(
+                                        onClick = {
+                                            val locomotiveSpinner = findViewById<Spinner>(R.id.locomotiveSpinner)
+                                            locomotiveSpinner.adapter = adapter
+                                        }
+                                )
                                 SpeedControl(
 
                                         onFastForwardClick = {
@@ -115,94 +207,16 @@ class SimpleClientActivity : ComponentActivity() {
                                             locomotiveSocket.sendLocomotive(locomotive)
                                         }
                                 )
-
                         }
                     }
                 }
             }
         }
-    }
-
-    // Add this line to your gradle dependencies for your Android project's app module:
-    //
-    //implementation 'com.android.volley:volley:1.1.1'
-    // https://stackoverflow.com/questions/20059576/import-android-volley-to-android-studio
 
 
-
-
-    // create a request que for HTTP POST and GET
-    val requestQueue = Volley.newRequestQueue(this)
-
-    // -------------------------------------------------------------------------------
-    //
-    //                  Locomotive
-    //
-    // -------------------------------------------------------------------------------
-
-    // listener to display errors
-    val locomotiveErrorListener = Response.ErrorListener { error: VolleyError ->
-        val errorView = findViewById<TextView>(R.id.locomotiveErrors)
-        errorView.text = error.message
-    }
-
-    // Adapter for the locomotiveSpinner view element. If we add or remove a LocomotiveServer
-    // here, the view will be updated and the user can select this server to control a locomotive
-    val adapter = ServerListAdapter(
-            this,
-            "$RAILROAD_SERVER/locomotive",
-            requestQueue,
-            locomotiveErrorListener
-    )
-
-    val locomotiveSpinner = findViewById<Spinner>(R.id.locomotiveSpinner)
-    locomotiveSpinner.adapter = adapter
-
-    locomotiveSpinner.onItemSelectedListener = object : OnItemSelectedListener {
-        override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-        ) {
-            // disconnect from current server
-            locomotiveSocket.disconnect()
-
-            // get the current locomotive server and connect
-            val locomotiveServer = parent.adapter.getItem(position) as Server
-            locomotiveSocket.connect(locomotiveServer.url, lifecycleScope)
-            val errorView = findViewById<TextView>(R.id.locomotiveErrors)
-            errorView.text = locomotiveServer.url
-        }
-
-        override fun onNothingSelected(parent: AdapterView<*>?) {
-            locomotiveSocket.disconnect()
-            Log.d("main", "nothing selected")
-        }
     }
 
 
-
-    locomotiveSocket.webSocketObserver =
-    object : WebSocketFacade.WebSocketObserver<Locomotive> {
-        override fun objectReceived(receivedObject: Locomotive) {
-            runOnUiThread {
-                val speed = receivedObject.speed
-                (findViewById<View>(R.id.speed) as TextView).text =
-                        MessageFormat.format("{0}", speed)
-
-                // store the locomotive locally, including it's ID
-                LocomotiveDAO.copy(receivedObject, this@SimpleClientActivity.locomotive)
-                this@SimpleClientActivity.locomotive.id = receivedObject.id
-            }
-        }
-
-        override fun connectionEstablished() {}
-        override fun connectionClosed() {}
-        override fun errorOccurred(throwable: Throwable) {
-            findViewById<Spinner>(R.id.locomotiveSpinner).setSelection(-1)
-        }
-    }
     companion object {
         /**
          * URL of the RailroadServlet. This servlet knows all active locomotive servers
@@ -544,3 +558,11 @@ class SimpleClientActivity : ComponentActivity() {
 */
 
 
+@Composable
+fun Example(onClick: () -> Unit = {}) {
+    FloatingActionButton(
+            onClick = { onClick() }
+    ) {
+        Icon(Icons.Filled.Add, "Floating action button.")
+    }
+}
