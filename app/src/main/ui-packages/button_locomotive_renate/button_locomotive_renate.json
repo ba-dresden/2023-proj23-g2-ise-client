@@ -5,7 +5,7 @@
     "type": "figma",
     "file": "HyjptjBv96f9rpNBhYy7cj",
     "node": "216:39",
-    "version": "4459545789",
+    "version": "4466260285",
     "component-id": "2b888144085ec441377677824fce7f10320582ad"
   },
   "default": "Default=Default",
@@ -130,6 +130,11 @@
   "parameters": {
     "onClick": {
       "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
+    "enabled": {
+      "data-type": "boolean",
       "required": false,
       "description": ""
     },
