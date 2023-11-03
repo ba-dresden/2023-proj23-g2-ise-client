@@ -121,6 +121,8 @@ class SimpleClientActivity : ComponentActivity() {
         locomotiveSocket.sendLocomotive(locomotive)
 
         val neu = adapter
+
+
         setContent {
             MaterialTheme {
                 Surface (
