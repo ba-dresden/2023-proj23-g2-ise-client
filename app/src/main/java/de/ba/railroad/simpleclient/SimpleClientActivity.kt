@@ -128,13 +128,6 @@ class SimpleClientActivity : ComponentActivity() {
                                 ButtonLocomotiveRenate(
                                         text = "Click Me - I'm Renate!?!",
                                         onClick = {
-                                            //val locomotiveSpinner = findViewById<Spinner>(R.id.locomotiveSpinner)
-                                            //locomotiveSpinner.adapter = adapter
-                                            // get the current locomotive server and connect
-                                            val locomotiveServer = parent.adapter.getItem(position) as Server
-                                            locomotiveSocket.connect(locomotiveServer.url, lifecycleScope)
-                                            //val errorView = findViewById<TextView>(R.id.locomotiveErrors)
-                                            //errorView.text = locomotiveServer.url
 
                                         }
 
