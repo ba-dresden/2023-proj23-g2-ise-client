@@ -2,6 +2,8 @@ package de.ba.railroad.simpleclient
 
 import android.icu.text.CaseMap.Title
 import android.os.Bundle
+import android.view.View
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -45,6 +47,9 @@ import de.ba.railroadclient.LocomotiveWebSocketClient
 import de.ba.railroadclient.ServerListAdapter
 import de.ba.railroadclient.SwitchGroupWebSocketClient
 import model.*
+import ws.WebSocketFacade
+import java.text.MessageFormat
+
 class SimpleClientActivity : ComponentActivity() {
 
     /**
@@ -110,20 +115,35 @@ class SimpleClientActivity : ComponentActivity() {
             locomotiveErrorListener
         )
 
-        // Renate
-        // ws://192.168.178.71:8076/locomotive
-        // Rapunzel
-        //ws://192.168.178.71:8082/locomotive
+        // Renate:      ws://192.168.178.71:8076/locomotive
+        // Rapunzel:    ws://192.168.178.71:8082/locomotive
         var renateUrl = "ws://192.168.178.71:8076/locomotive"
         var rapunzelUrl = "ws://192.168.178.71:8082/locomotive"
-        /*
-        locomotiveSocket.connect(renateUrl, lifecycleScope)
-        locomotive.direction = Locomotive.DIRECTION_FORWARD
-        locomotive.speed = 100
-        locomotiveSocket.sendLocomotive(locomotive)
-         */
 
-        val neu = adapter
+
+        locomotiveSocket.webSocketObserver =
+            object : WebSocketFacade.WebSocketObserver<Locomotive> {
+                override fun objectReceived(receivedObject: Locomotive) {
+                    runOnUiThread {
+                        val speed = receivedObject.speed
+
+                        // Alter Code : to do!
+                        //(findViewById<View>(R.id.speed) as TextView).text =
+                        //    MessageFormat.format("{0}", speed)
+
+                        // store the locomotive locally, including it's ID
+                        LocomotiveDAO.copy(receivedObject, this@SimpleClientActivity.locomotive)
+                        this@SimpleClientActivity.locomotive.id = receivedObject.id
+                    }
+                }
+
+                override fun connectionEstablished() {}
+                override fun connectionClosed() {}
+                override fun errorOccurred(throwable: Throwable) {
+                    // Alter Code : to do!
+                    //findViewById<Spinner>(R.id.locomotiveSpinner).setSelection(-1)
+                }
+            }
 
 
         setContent {
@@ -204,7 +224,6 @@ class SimpleClientActivity : ComponentActivity() {
          * 10.0.2.2     (local) Host for Android Emulator
          */
 
-        // private const val RAILROAD_SERVER = "http://192.168.178.71:8095";
          private const val RAILROAD_SERVER = "http://10.0.2.2:8095";
         // private const val RAILROAD_SERVER = "http://ise-rrs01.dv.ba-dresden.local:8095";
         // private const val RAILROAD_SERVER = "http://dv-git01.dv.ba-dresden.local:8095"
