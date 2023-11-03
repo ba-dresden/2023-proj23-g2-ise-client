@@ -11,10 +11,12 @@ import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,13 +32,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.unit.dp
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayImage
+import com.google.relay.compose.RowScopeInstanceImpl.weight
 import de.ba.railroad.simpleclient.buttonlocomotiverenate.ButtonLocomotiveRenate
 import de.ba.railroad.simpleclient.buttonlocomotiverenate.Default
+import de.ba.railroad.simpleclient.rails.Rails
 import de.ba.railroad.simpleclient.speedcontrol.SpeedControl
+import de.ba.railroad.simpleclient.trainextensions.TrainExtensions
 import de.ba.railroadclient.CraneWebSocketClient
 import de.ba.railroadclient.LocomotiveWebSocketClient
 import de.ba.railroadclient.SwitchGroupWebSocketClient
@@ -83,43 +89,45 @@ class SimpleClientActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
-                Surface (
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Row (
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.Bottom
-                    ) {
-                        Column (
-                            modifier = Modifier.weight(1f),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Bottom
-                        )
-                        {
-                                Card (
+
+                    Row(modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                            .padding(10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(20.dp),
+                    ){
+                        Box() {
+                            Rails(modifier = Modifier.align(Alignment.TopStart))
+
+                            Box(modifier = Modifier.padding(10.dp)){
+                                Card(
                                         shape = RoundedCornerShape(30.dp),
                                         border = BorderStroke(width = 2.dp, color = Color.White),
                                         modifier = Modifier
                                                 .clip(RoundedCornerShape(30.dp))
                                                 .size(width = 93.dp, height = 40.dp)
-                                ){
-                                    var enabled = remember{mutableStateOf(true)}
-                                    var property = if(enabled.value) Default.Default else Default.Pressed
-                                    ButtonLocomotiveRenate(text = "Renate",
+                                                .align(Alignment.TopStart)
+                                ) {
+                                    var enabled = remember { mutableStateOf(true) }
+                                    var property = if (enabled.value) Default.Default else Default.Pressed
+                                    ButtonLocomotiveRenate(
+                                            text = "Renate",
                                             default = property,
                                             onClick = {
                                                 enabled.value = !(enabled.value)
                                             })
                                 }
+                            }
+                            SpeedControl(modifier = Modifier.align(Alignment.BottomCenter))
 
                         }
+                        TrainExtensions()
                     }
+
                 }
             }
         }
     }
-}
 
         /*
         setContentView(R.layout.activity_main)

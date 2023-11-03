@@ -1,0 +1,148 @@
+{
+  "name": "rails",
+  "version": 32,
+  "source-key": {
+    "type": "figma",
+    "file": "HyjptjBv96f9rpNBhYy7cj",
+    "node": "242:39",
+    "version": "4467980220",
+    "component-id": "79ce4e24700b096b65ffce904775d0af9bb726ff"
+  },
+  "default": "Rails",
+  "design": {
+    "atoms": [
+      {
+        "type": "group",
+        "id": "top_level",
+        "root": "true"
+      },
+      {
+        "type": "group",
+        "id": "TrainControl"
+      },
+      {
+        "type": "vector",
+        "id": "TrainControlPlaceholder"
+      },
+      {
+        "type": "image",
+        "id": "RailImage"
+      }
+    ],
+    "modes": {
+      "Rails": {
+        "rules": [
+          {
+            "id": "top_level",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "shrink"
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "arrangement": "row",
+            "main-axis-align": "start",
+            "cross-axis-align": "start",
+            "children": [
+              "TrainControl"
+            ],
+            "item-spacing": "10.0",
+            "clip-content": "false"
+          },
+          {
+            "id": "TrainControl",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "668.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "333.0"
+              }
+            },
+            "is-structured": "false",
+            "children": [
+              "TrainControlPlaceholder",
+              "RailImage"
+            ],
+            "clip-content": "false"
+          },
+          {
+            "id": "TrainControlPlaceholder",
+            "border-radius": "22.0",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": "1.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": "1.0"
+              }
+            },
+            "vector-content": "train_control_placeholder.svg"
+          },
+          {
+            "id": "RailImage",
+            "margin": {
+              "left": "26.0",
+              "top": "96.0",
+              "right": "27.0",
+              "bottom": "121.0"
+            },
+            "drop-shadow": {
+              "color": {
+                "alpha": "0.24705882352941178",
+                "hue": "0.0",
+                "saturation": "0.0",
+                "value": "0.0"
+              },
+              "blur": "19.0",
+              "offset-x": "1.0",
+              "offset-y": "2.0",
+              "spread": "0.0",
+              "blend-mode": "normal"
+            },
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": "-18.0"
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": "-17.0"
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": "1.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "proportional",
+                "value": "1.0"
+              }
+            },
+            "image-content": "rail_image.png",
+            "scale": "cover"
+          }
+        ]
+      }
+    }
+  },
+  "previews": [
+    {
+      "design": "Rails",
+      "size": {
+        "width": 668.0,
+        "height": 333.0
+      }
+    }
+  ],
+  "adin-component-search-paths": [],
+  "image-search-paths": [],
+  "vector-search-paths": []
+}

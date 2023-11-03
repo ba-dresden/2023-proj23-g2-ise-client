@@ -1,0 +1,76 @@
+{
+  "name": "train_extensions",
+  "version": 32,
+  "source-key": {
+    "type": "figma",
+    "file": "HyjptjBv96f9rpNBhYy7cj",
+    "node": "245:62",
+    "version": "4468078888",
+    "component-id": "4c5d82bd93059232ae44ee64eabedcb0896c99ed"
+  },
+  "default": "TrainExtensions",
+  "design": {
+    "atoms": [
+      {
+        "type": "group",
+        "id": "top_level",
+        "root": "true"
+      },
+      {
+        "type": "vector",
+        "id": "TrainExtensionsPlaceholder"
+      }
+    ],
+    "modes": {
+      "TrainExtensions": {
+        "rules": [
+          {
+            "id": "top_level",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "shrink"
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "main-axis-align": "start",
+            "cross-axis-align": "start",
+            "children": [
+              "TrainExtensionsPlaceholder"
+            ],
+            "item-spacing": "10.0",
+            "clip-content": "false"
+          },
+          {
+            "id": "TrainExtensionsPlaceholder",
+            "border-radius": "22.0",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "99.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "333.0"
+              }
+            },
+            "vector-content": "train_extensions_placeholder.svg"
+          }
+        ]
+      }
+    }
+  },
+  "previews": [
+    {
+      "design": "TrainExtensions",
+      "size": {
+        "width": 99.0,
+        "height": 333.0
+      }
+    }
+  ],
+  "adin-component-search-paths": [],
+  "image-search-paths": [],
+  "vector-search-paths": []
+}

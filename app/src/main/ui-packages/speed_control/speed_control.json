@@ -5,7 +5,7 @@
     "type": "figma",
     "file": "HyjptjBv96f9rpNBhYy7cj",
     "node": "165:13",
-    "version": "4466555376",
+    "version": "4468222805",
     "component-id": "e9d33f0c55678e67bc7121c3de0e91d210b3ca7b"
   },
   "default": "SpeedControl",
@@ -387,6 +387,7 @@
           },
           {
             "id": "FastBackArrows",
+            "border-radius": "1.0",
             "alignment": {
               "horizontal": {
                 "attachment": "start",
@@ -466,14 +467,15 @@
           },
           {
             "id": "FastBackArrow2",
+            "border-radius": "1.0",
             "alignment": {
               "horizontal": {
                 "attachment": "start",
-                "offset": "7.000003933906555"
+                "offset": "7.876468777656555"
               },
               "vertical": {
                 "attachment": "start",
-                "offset": "2.6076693534851074"
+                "offset": "3.4177279472351074"
               }
             },
             "size-constraints": {
@@ -490,14 +492,15 @@
           },
           {
             "id": "FastBackArrow1",
+            "border-radius": "1.0",
             "alignment": {
               "horizontal": {
                 "attachment": "start",
-                "offset": "-0.9999960660934448"
+                "offset": "-0.12353122234344482"
               },
               "vertical": {
                 "attachment": "start",
-                "offset": "2.6076693534851074"
+                "offset": "3.4177279472351074"
               }
             },
             "size-constraints": {
