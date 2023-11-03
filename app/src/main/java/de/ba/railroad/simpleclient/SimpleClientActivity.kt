@@ -2,6 +2,7 @@ package de.ba.railroad.simpleclient
 
 import android.icu.text.CaseMap.Title
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -30,6 +31,9 @@ import androidx.compose.ui.graphics.vector.DefaultTranslationX
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
+import com.android.volley.Response
+import com.android.volley.VolleyError
+import com.android.volley.toolbox.Volley
 import com.google.relay.compose.BoxScopeInstanceImpl.align
 import com.google.relay.compose.RelayBox
 import com.google.relay.compose.RelayColumn
@@ -38,6 +42,7 @@ import de.ba.railroad.simpleclient.buttonlocomotiverenate.ButtonLocomotiveRenate
 import de.ba.railroad.simpleclient.speedcontrol.SpeedControl
 import de.ba.railroadclient.CraneWebSocketClient
 import de.ba.railroadclient.LocomotiveWebSocketClient
+import de.ba.railroadclient.ServerListAdapter
 import de.ba.railroadclient.SwitchGroupWebSocketClient
 import model.*
 class SimpleClientActivity : ComponentActivity() {
@@ -80,6 +85,30 @@ class SimpleClientActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // create a request que for HTTP POST and GET
+        val requestQueue = Volley.newRequestQueue(this)
+
+        // -------------------------------------------------------------------------------
+        //
+        //                  Locomotive
+        //
+        // -------------------------------------------------------------------------------
+
+        // listener to display errors
+        val locomotiveErrorListener = Response.ErrorListener { error: VolleyError ->
+            val errorView = findViewById<TextView>(R.id.locomotiveErrors)
+            errorView.text = error.message
+        }
+
+        // Adapter for the locomotiveSpinner view element. If we add or remove a LocomotiveServer
+        // here, the view will be updated and the user can select this server to control a locomotive
+        val adapter = ServerListAdapter(
+            this,
+            "$RAILROAD_SERVER/locomotive",
+            requestQueue,
+            locomotiveErrorListener
+        )
         setContent {
             MaterialTheme {
                 Surface (
@@ -137,6 +166,23 @@ class SimpleClientActivity : ComponentActivity() {
                 }
             }
         }
+    }
+    companion object {
+        /**
+         * URL of the RailroadServlet. This servlet knows all active locomotive servers
+         *
+         * ise-rrs01    Vitrine
+         * dv-git01     BA Virtual Development Server
+         * 10.0.2.2     (local) Host for Android Emulator
+         */
+        // Renate
+        // ws://192.168.178.71:8076/locomotive
+        // Rapunzel
+        //ws://192.168.178.71:8082/locomotive
+        private const val RAILROAD_SERVER = "http://192.168.178.71:8095";
+        // private const val RAILROAD_SERVER = "http://10.0.2.2:8095";
+        // private const val RAILROAD_SERVER = "http://ise-rrs01.dv.ba-dresden.local:8095";
+        // private const val RAILROAD_SERVER = "http://dv-git01.dv.ba-dresden.local:8095"
     }
 }
 
