@@ -109,6 +109,18 @@ class SimpleClientActivity : ComponentActivity() {
             requestQueue,
             locomotiveErrorListener
         )
+
+        // Renate
+        // ws://192.168.178.71:8076/locomotive
+        // Rapunzel
+        //ws://192.168.178.71:8082/locomotive
+        var renateUrl = "ws://192.168.178.71:8076/locomotive"
+        locomotiveSocket.connect(renateUrl, lifecycleScope)
+        locomotive.direction = Locomotive.DIRECTION_FORWARD
+        locomotive.speed = 100
+        locomotiveSocket.sendLocomotive(locomotive)
+
+        val neu = adapter
         setContent {
             MaterialTheme {
                 Surface (
@@ -133,16 +145,23 @@ class SimpleClientActivity : ComponentActivity() {
 
                                 )
                                 SpeedControl(
-                                        onFastForwardClick  = {},
-                                        onForwardButtonClick = {},
+                                        onFastForwardClick  = {
+                                            locomotive.direction = Locomotive.DIRECTION_FORWARD
+                                            locomotive.speed = 100
+                                            locomotiveSocket.sendLocomotive(locomotive)
+                                        },
+                                        onForwardButtonClick = {
+                                            locomotive.direction = Locomotive.DIRECTION_FORWARD
+                                            locomotive.speed = 30
+                                            locomotiveSocket.sendLocomotive(locomotive)
+                                        },
                                         onStopButtonClick  = {
-                                            locomotive.direction = Locomotive.DIRECTION_BACKWARD
-                                            locomotive.speed = 20
+                                            locomotive.speed = 0
                                             locomotiveSocket.sendLocomotive(locomotive)
                                         },
                                         onBackButtonClick  = {
                                             locomotive.direction = Locomotive.DIRECTION_BACKWARD
-                                            locomotive.speed = 20
+                                            locomotive.speed = 30
                                             locomotiveSocket.sendLocomotive(locomotive)
                                         },
                                         onFastBackButtonClick = {
@@ -160,6 +179,8 @@ class SimpleClientActivity : ComponentActivity() {
             }
         }
     }
+
+    val check = "check"
     companion object {
         /**
          * URL of the RailroadServlet. This servlet knows all active locomotive servers
@@ -168,10 +189,7 @@ class SimpleClientActivity : ComponentActivity() {
          * dv-git01     BA Virtual Development Server
          * 10.0.2.2     (local) Host for Android Emulator
          */
-        // Renate
-        // ws://192.168.178.71:8076/locomotive
-        // Rapunzel
-        //ws://192.168.178.71:8082/locomotive
+
         private const val RAILROAD_SERVER = "http://192.168.178.71:8095";
         // private const val RAILROAD_SERVER = "http://10.0.2.2:8095";
         // private const val RAILROAD_SERVER = "http://ise-rrs01.dv.ba-dresden.local:8095";
