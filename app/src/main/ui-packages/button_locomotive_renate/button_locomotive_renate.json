@@ -5,7 +5,7 @@
     "type": "figma",
     "file": "HyjptjBv96f9rpNBhYy7cj",
     "node": "216:39",
-    "version": "4467980220",
+    "version": "4494021491",
     "component-id": "2b888144085ec441377677824fce7f10320582ad"
   },
   "default": "Default=Default",
@@ -78,7 +78,7 @@
             "id": "top_level",
             "border-radius": "20.0",
             "tap-handler": "$onClick",
-            "stroke-width": "3.0",
+            "stroke-width": "5.0",
             "stroke-color": {
               "alpha": "1.0",
               "hue": "86.5909090909091",

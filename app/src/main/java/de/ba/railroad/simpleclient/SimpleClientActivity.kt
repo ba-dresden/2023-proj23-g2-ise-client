@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.modifier.modifierLocalConsumer
@@ -105,7 +106,7 @@ class SimpleClientActivity : ComponentActivity() {
                                         border = BorderStroke(width = 2.dp, color = Color.White),
                                         modifier = Modifier
                                                 .clip(RoundedCornerShape(30.dp))
-                                                .size(width = 93.dp, height = 40.dp)
+                                                .size(width = 94.dp, height = 40.dp)
                                                 .align(Alignment.TopStart)
                                 ) {
                                     var enabled = remember { mutableStateOf(true) }
@@ -118,7 +119,10 @@ class SimpleClientActivity : ComponentActivity() {
                                             })
                                 }
                             }
-                            SpeedControl(modifier = Modifier.align(Alignment.BottomCenter))
+                            SpeedControl(modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .shadow(elevation = 50. dp, shape = CircleShape )
+                            )
 
                         }
                         TrainExtensions()

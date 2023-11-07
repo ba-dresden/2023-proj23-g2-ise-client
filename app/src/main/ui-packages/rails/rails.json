@@ -5,7 +5,7 @@
     "type": "figma",
     "file": "HyjptjBv96f9rpNBhYy7cj",
     "node": "242:39",
-    "version": "4467980220",
+    "version": "4493959506",
     "component-id": "79ce4e24700b096b65ffce904775d0af9bb726ff"
   },
   "default": "Rails",
@@ -56,11 +56,11 @@
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "fixed",
-                "value": "668.0"
+                "value": "707.0"
               },
               "height-constraints": {
                 "sizing-mode": "fixed",
-                "value": "333.0"
+                "value": "352.0"
               }
             },
             "is-structured": "false",
@@ -88,33 +88,10 @@
           {
             "id": "RailImage",
             "margin": {
-              "left": "26.0",
-              "top": "96.0",
-              "right": "27.0",
-              "bottom": "121.0"
-            },
-            "drop-shadow": {
-              "color": {
-                "alpha": "0.24705882352941178",
-                "hue": "0.0",
-                "saturation": "0.0",
-                "value": "0.0"
-              },
-              "blur": "19.0",
-              "offset-x": "1.0",
-              "offset-y": "2.0",
-              "spread": "0.0",
-              "blend-mode": "normal"
-            },
-            "alignment": {
-              "horizontal": {
-                "attachment": "start",
-                "offset": "-18.0"
-              },
-              "vertical": {
-                "attachment": "start",
-                "offset": "-17.0"
-              }
+              "left": "27.51806640625",
+              "top": "101.4774169921875",
+              "right": "28.576171875",
+              "bottom": "127.9039306640625"
             },
             "size-constraints": {
               "width-constraints": {
@@ -137,8 +114,8 @@
     {
       "design": "Rails",
       "size": {
-        "width": 668.0,
-        "height": 333.0
+        "width": 707.0,
+        "height": 352.0
       }
     }
   ],
