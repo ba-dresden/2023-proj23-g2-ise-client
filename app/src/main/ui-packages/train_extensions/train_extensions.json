@@ -5,7 +5,7 @@
     "type": "figma",
     "file": "HyjptjBv96f9rpNBhYy7cj",
     "node": "245:62",
-    "version": "4468078888",
+    "version": "4493980417",
     "component-id": "4c5d82bd93059232ae44ee64eabedcb0896c99ed"
   },
   "default": "TrainExtensions",
@@ -48,11 +48,11 @@
             "size-constraints": {
               "width-constraints": {
                 "sizing-mode": "fixed",
-                "value": "99.0"
+                "value": "119.0"
               },
               "height-constraints": {
                 "sizing-mode": "fixed",
-                "value": "333.0"
+                "value": "353.0"
               }
             },
             "vector-content": "train_extensions_placeholder.svg"
@@ -65,8 +65,8 @@
     {
       "design": "TrainExtensions",
       "size": {
-        "width": 99.0,
-        "height": 333.0
+        "width": 119.0,
+        "height": 353.0
       }
     }
   ],
