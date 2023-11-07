@@ -117,8 +117,8 @@ class SimpleClientActivity : ComponentActivity() {
 
         // Renate:      ws://192.168.178.71:8076/locomotive
         // Rapunzel:    ws://192.168.178.71:8082/locomotive
-        var renateUrl = "ws://192.168.178.71:8076/locomotive"
-        var rapunzelUrl = "ws://192.168.178.71:8082/locomotive"
+        var renateUrl = "ws://ise-rrs01.dv.ba-dresden.local:8076/locomotive"
+        var rapunzelUrl = "ws://ise-rrs01.dv.ba-dresden.local:8082/locomotive"
 
 
         locomotiveSocket.webSocketObserver =
@@ -224,8 +224,8 @@ class SimpleClientActivity : ComponentActivity() {
          * 10.0.2.2     (local) Host for Android Emulator
          */
 
-         private const val RAILROAD_SERVER = "http://10.0.2.2:8095";
-        // private const val RAILROAD_SERVER = "http://ise-rrs01.dv.ba-dresden.local:8095";
+        //private const val RAILROAD_SERVER = "http://10.0.2.2:8095";
+        private const val RAILROAD_SERVER = "http://ise-rrs01.dv.ba-dresden.local:8095";
         // private const val RAILROAD_SERVER = "http://dv-git01.dv.ba-dresden.local:8095"
     }
 }
