@@ -1,6 +1,7 @@
 package de.ba.railroad.simpleclient
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -34,6 +35,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
+import com.android.volley.Response
+import com.android.volley.VolleyError
+import com.android.volley.toolbox.Volley
 import com.google.relay.compose.RelayContainer
 import com.google.relay.compose.RelayContainerScope
 import com.google.relay.compose.RelayImage
@@ -45,8 +50,11 @@ import de.ba.railroad.simpleclient.speedcontrol.SpeedControl
 import de.ba.railroad.simpleclient.trainextensions.TrainExtensions
 import de.ba.railroadclient.CraneWebSocketClient
 import de.ba.railroadclient.LocomotiveWebSocketClient
+import de.ba.railroadclient.ServerListAdapter
 import de.ba.railroadclient.SwitchGroupWebSocketClient
 import model.*
+import ws.WebSocketFacade
+
 class SimpleClientActivity : ComponentActivity() {
 
     /**
@@ -87,6 +95,65 @@ class SimpleClientActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+        // create a request que for HTTP POST and GET
+        val requestQueue = Volley.newRequestQueue(this)
+
+        // -------------------------------------------------------------------------------
+        //
+        //                  Locomotive
+        //
+        // -------------------------------------------------------------------------------
+
+        // listener to display errors
+        val locomotiveErrorListener = Response.ErrorListener { error: VolleyError ->
+            val errorView = findViewById<TextView>(R.id.locomotiveErrors)
+            errorView.text = error.message
+        }
+
+        // Adapter for the locomotiveSpinner view element. If we add or remove a LocomotiveServer
+        // here, the view will be updated and the user can select this server to control a locomotive
+        val adapter = ServerListAdapter(
+                this,
+                "$RAILROAD_SERVER/locomotive",
+                requestQueue,
+                locomotiveErrorListener
+        )
+
+        // Renate:      ws://192.168.178.71:8076/locomotive
+        // Rapunzel:    ws://192.168.178.71:8082/locomotive
+        var renateUrl = "ws://10.195.24.130:8076/locomotive"
+        var steamUrl = "ws://10.195.24.142:8075/locomotive"
+
+
+        locomotiveSocket.webSocketObserver =
+                object : WebSocketFacade.WebSocketObserver<Locomotive> {
+                    override fun objectReceived(receivedObject: Locomotive) {
+                        runOnUiThread {
+                            val speed = receivedObject.speed
+
+                            // Alter Code : to do!
+                            //(findViewById<View>(R.id.speed) as TextView).text =
+                            //    MessageFormat.format("{0}", speed)
+
+                            // store the locomotive locally, including it's ID
+                            LocomotiveDAO.copy(receivedObject, this@SimpleClientActivity.locomotive)
+                            this@SimpleClientActivity.locomotive.id = receivedObject.id
+                        }
+                    }
+
+                    override fun connectionEstablished() {}
+                    override fun connectionClosed() {}
+                    override fun errorOccurred(throwable: Throwable) {
+                        // Alter Code : to do!
+                        //findViewById<Spinner>(R.id.locomotiveSpinner).setSelection(-1)
+                    }
+                }
+
+
+
+
         setContent {
             MaterialTheme {
 
@@ -115,10 +182,47 @@ class SimpleClientActivity : ComponentActivity() {
                                             default = property,
                                             onClick = {
                                                 enabled.value = !(enabled.value)
+                                                locomotiveSocket.disconnect()
+                                                locomotiveSocket.connect(renateUrl, lifecycleScope)
+                                            })
+                                    ButtonLocomotiveRenate(
+                                            text = "Steam",
+                                            default = property,
+                                            onClick = {
+                                                enabled.value = !(enabled.value)
+                                                locomotiveSocket.disconnect()
+                                                locomotiveSocket.connect(steamUrl, lifecycleScope)
                                             })
                                 }
                             }
-                            SpeedControl(modifier = Modifier.align(Alignment.BottomCenter))
+                            SpeedControl(
+                                    modifier = Modifier.align(Alignment.BottomCenter),
+
+                                    onFastForwardClick  = {
+                                        locomotive.direction = Locomotive.DIRECTION_FORWARD
+                                        locomotive.speed = 100
+                                        locomotiveSocket.sendLocomotive(locomotive)
+                                    },
+                                    onForwardButtonClick = {
+                                        locomotive.direction = Locomotive.DIRECTION_FORWARD
+                                        locomotive.speed = 60
+                                        locomotiveSocket.sendLocomotive(locomotive)
+                                    },
+                                    onStopButtonClick  = {
+                                        locomotive.speed = 0
+                                        locomotiveSocket.sendLocomotive(locomotive)
+                                    },
+                                    onBackButtonClick  = {
+                                        locomotive.direction = Locomotive.DIRECTION_BACKWARD
+                                        locomotive.speed = 60
+                                        locomotiveSocket.sendLocomotive(locomotive)
+                                    },
+                                    onFastBackButtonClick = {
+                                        locomotive.direction = Locomotive.DIRECTION_BACKWARD
+                                        locomotive.speed = 100
+                                        locomotiveSocket.sendLocomotive(locomotive)
+                                    }
+                            )
 
                         }
                         TrainExtensions()
@@ -127,6 +231,18 @@ class SimpleClientActivity : ComponentActivity() {
                 }
             }
         }
+    companion object {
+        /**
+         * URL of the RailroadServlet. This servlet knows all active locomotive servers
+         *
+         * ise-rrs01    Vitrine
+         * dv-git01     BA Virtual Development Server
+         * 10.0.2.2     (local) Host for Android Emulator
+         */
+        // private const val RAILROAD_SERVER = "http://10.0.2.2:8095";
+        private const val RAILROAD_SERVER = "http://ise-rrs01.dv.ba-dresden.local:8095";
+        // private const val RAILROAD_SERVER = "http://dv-git01.dv.ba-dresden.local:8095"
+    }
     }
 
         /*
