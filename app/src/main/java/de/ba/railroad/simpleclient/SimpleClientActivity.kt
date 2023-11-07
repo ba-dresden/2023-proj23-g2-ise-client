@@ -111,7 +111,7 @@ class SimpleClientActivity : ComponentActivity() {
             val errorView = findViewById<TextView>(R.id.locomotiveErrors)
             errorView.text = error.message
         }
-
+/*
         // Adapter for the locomotiveSpinner view element. If we add or remove a LocomotiveServer
         // here, the view will be updated and the user can select this server to control a locomotive
         val adapter = ServerListAdapter(
@@ -120,6 +120,8 @@ class SimpleClientActivity : ComponentActivity() {
                 requestQueue,
                 locomotiveErrorListener
         )
+
+ */
 
         // Renate:      ws://192.168.178.71:8076/locomotive
         // Rapunzel:    ws://192.168.178.71:8082/locomotive
@@ -185,6 +187,7 @@ class SimpleClientActivity : ComponentActivity() {
                                                 locomotiveSocket.disconnect()
                                                 locomotiveSocket.connect(renateUrl, lifecycleScope)
                                             })
+                                    /*
                                     ButtonLocomotiveRenate(
                                             text = "Steam",
                                             default = property,
@@ -193,6 +196,8 @@ class SimpleClientActivity : ComponentActivity() {
                                                 locomotiveSocket.disconnect()
                                                 locomotiveSocket.connect(steamUrl, lifecycleScope)
                                             })
+
+                                     */
                                 }
                             }
                             SpeedControl(
@@ -231,6 +236,7 @@ class SimpleClientActivity : ComponentActivity() {
                 }
             }
         }
+    /*
     companion object {
         /**
          * URL of the RailroadServlet. This servlet knows all active locomotive servers
@@ -243,6 +249,8 @@ class SimpleClientActivity : ComponentActivity() {
         private const val RAILROAD_SERVER = "http://ise-rrs01.dv.ba-dresden.local:8095";
         // private const val RAILROAD_SERVER = "http://dv-git01.dv.ba-dresden.local:8095"
     }
+
+     */
     }
 
         /*
