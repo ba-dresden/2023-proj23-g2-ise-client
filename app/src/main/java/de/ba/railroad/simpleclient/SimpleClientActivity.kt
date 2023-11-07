@@ -168,14 +168,17 @@ class SimpleClientActivity : ComponentActivity() {
                         Box() {
                             Rails(modifier = Modifier.align(Alignment.TopStart))
 
-                            Box(modifier = Modifier.padding(10.dp)){
+                            Row(modifier = Modifier.padding(10.dp),
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                                    verticalAlignment = Alignment.CenterVertically){
                                 Card(
                                         shape = RoundedCornerShape(30.dp),
                                         border = BorderStroke(width = 2.dp, color = Color.White),
                                         modifier = Modifier
                                                 .clip(RoundedCornerShape(30.dp))
                                                 .size(width = 93.dp, height = 40.dp)
-                                                .align(Alignment.TopStart)
+
+
                                 ) {
                                     var enabled = remember { mutableStateOf(true) }
                                     var property = if (enabled.value) Default.Default else Default.Pressed
@@ -187,7 +190,17 @@ class SimpleClientActivity : ComponentActivity() {
                                                 locomotiveSocket.disconnect()
                                                 locomotiveSocket.connect(renateUrl, lifecycleScope)
                                             })
-                                    /*
+                                }
+                                Card(
+                                        shape = RoundedCornerShape(30.dp),
+                                        border = BorderStroke(width = 2.dp, color = Color.White),
+                                        modifier = Modifier
+                                                .clip(RoundedCornerShape(30.dp))
+                                                .size(width = 90.dp, height = 40.dp)
+
+                                ) {
+                                    var enabled = remember { mutableStateOf(true) }
+                                    var property = if (enabled.value) Default.Default else Default.Pressed
                                     ButtonLocomotiveRenate(
                                             text = "Steam",
                                             default = property,
@@ -196,8 +209,6 @@ class SimpleClientActivity : ComponentActivity() {
                                                 locomotiveSocket.disconnect()
                                                 locomotiveSocket.connect(steamUrl, lifecycleScope)
                                             })
-
-                                     */
                                 }
                             }
                             SpeedControl(
