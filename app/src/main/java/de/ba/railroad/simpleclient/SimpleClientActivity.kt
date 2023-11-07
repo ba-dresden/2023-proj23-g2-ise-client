@@ -114,16 +114,14 @@ class SimpleClientActivity : ComponentActivity() {
         // ws://192.168.178.71:8076/locomotive
         // Rapunzel
         //ws://192.168.178.71:8082/locomotive
-        var renateUrl = "ws://192.168.178.71:8076/locomotive"
-        var rapunzelUrl = "ws://192.168.178.71:8082/locomotive"
+        val list = adapter.getServers()
+        list[0].url
         /*
         locomotiveSocket.connect(renateUrl, lifecycleScope)
         locomotive.direction = Locomotive.DIRECTION_FORWARD
         locomotive.speed = 100
         locomotiveSocket.sendLocomotive(locomotive)
          */
-
-        val neu = adapter
 
 
         setContent {
@@ -146,7 +144,7 @@ class SimpleClientActivity : ComponentActivity() {
                                         text = "Renate: Connect",
                                         onClick = {
                                             locomotiveSocket.disconnect()
-                                            locomotiveSocket.connect(renateUrl, lifecycleScope)
+                                            locomotiveSocket.connect(list[0].url, lifecycleScope)
                                         }
 
                                 )
@@ -154,7 +152,7 @@ class SimpleClientActivity : ComponentActivity() {
                                         text = "Rapunzel: Connect",
                                         onClick = {
                                             locomotiveSocket.disconnect()
-                                            locomotiveSocket.connect(rapunzelUrl, lifecycleScope)
+                                            locomotiveSocket.connect(list[1].url, lifecycleScope)
                                 }
 
                                 )

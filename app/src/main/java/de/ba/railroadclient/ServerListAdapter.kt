@@ -33,15 +33,50 @@ import org.json.JSONArray
  * @param errorListener listener to handle errors
  */
 open class ServerListAdapter(
-    context: Context,
-    var serverURL: String?,
-    private val requestQueue: RequestQueue,
-    private val errorListener: Response.ErrorListener?
-) : ArrayAdapter<Server>(context, R.layout.support_simple_spinner_dropdown_item) {
+        context: Context,
+        private val serverURL: String?,
+        private val requestQueue: RequestQueue,
+        private val errorListener: Response.ErrorListener?
+) {
+    private lateinit var newItems: MutableList<Server>
+    fun run() {
+        // cancel the HTTP request in case of an empty URI
+        if (serverURL == null || serverURL!!.isEmpty()) {
+            return
+        }
 
-    /**
+        // get all active locomotive servers
+        val getRequest =
+                JsonArrayRequest(Request.Method.GET, serverURL, null, { response: JSONArray ->
+                    Log.d("updateRunnable", "getRequest: $response")
+
+                    // update the items
+                    updateListItems(response)
+                }, errorListener)
+
+        // add the GET action to the request que
+        requestQueue.add(getRequest)
+    }
+
+    private fun updateListItems(response: JSONArray) {
+        newItems = (0 until response.length())
+                .mapNotNull {
+                    execute {
+                        ServerDAO.read(response.getJSONObject(it).toString())
+                    }.getOrNull()
+                }
+                .toMutableList()
+    }
+
+    fun getServers():MutableList<Server> {
+        return newItems
+    }
+
+    /*
+
+     /
      * the Update Handler is responsible for calling the update task
-     */
+
     private val updateHandler = Handler(Looper.getMainLooper())
 
     /**
@@ -106,5 +141,5 @@ open class ServerListAdapter(
         // add new items
         newItems.filter { getPosition(it) < 0 }
             .forEach { add(it) }
-    }
+    } */
 }
