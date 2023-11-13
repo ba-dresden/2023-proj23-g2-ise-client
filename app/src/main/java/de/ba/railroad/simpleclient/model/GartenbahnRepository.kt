@@ -21,6 +21,7 @@ import org.json.JSONArray
 import ws.WebSocketFacade
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineScope
+import model.LocomotiveDAO
 
 class GartenbahnRepository(private val lifecycle: LifecycleCoroutineScope) : ServerData {
     private val _server = MutableLiveData<List<Server>>()
@@ -71,6 +72,19 @@ class GartenbahnRepository(private val lifecycle: LifecycleCoroutineScope) : Ser
     }
 
     init {
+        locomotiveSocket.webSocketObserver =
+                object : WebSocketFacade.WebSocketObserver<Locomotive> {
+                    override fun objectReceived(receivedObject: Locomotive) {
+                            val speed = receivedObject.speed
+                            // store the locomotive locally, including it's ID
+                            LocomotiveDAO.copy(receivedObject, this@GartenbahnRepository.locomotive)
+                            this@GartenbahnRepository.locomotive.id = receivedObject.id
+
+                    }
+                    override fun connectionEstablished() {}
+                    override fun connectionClosed() {}
+                    override fun errorOccurred(throwable: Throwable){}
+                }
         // update the list of active servers
         updateHandler.post(updateRunnable)
     }
@@ -111,8 +125,8 @@ class GartenbahnRepository(private val lifecycle: LifecycleCoroutineScope) : Ser
          * dv-git01     BA Virtual Development Server
          * 10.0.2.2     (local) Host for Android Emulator
          */
-        // private const val RAILROAD_SERVER = "http://10.0.2.2:8095";
-        private const val RAILROAD_SERVER = "http://ise-rrs01.dv.ba-dresden.local:8095";
+        private const val RAILROAD_SERVER = "http://10.0.2.2:8095";
+        // private const val RAILROAD_SERVER = "http://ise-rrs01.dv.ba-dresden.local:8095";
         // private const val RAILROAD_SERVER = "http://dv-git01.dv.ba-dresden.local:8095"
     }
 }
